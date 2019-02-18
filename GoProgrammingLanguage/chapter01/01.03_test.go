@@ -23,3 +23,8 @@ func BenchmarkNotJoin(b *testing.B) {
         fmt.Println(s)
     }
 }
+
+// testingをimportしBenchmarkしたい関数の接頭辞にBenchmarkを付与し、引数にb *testing.Bを指定。
+// ループの数は b.N を指定すると適切なベンチマークの回数ループしてくれる。
+// ソースコードの接尾辞を "_test.go" をとし、以下実行するとベンチマークしてくれる。
+//  $ go test -bench .

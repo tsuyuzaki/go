@@ -1,0 +1,7 @@
+1.4 GIFアニメーション
+-  importしたパッケージはコード中では最後の要素の名前でそのパッケージを参照する。
+　Ex) image/gif をimportした場合、gif.GIF{… 
+- constの値は、数値、文字列、ブーリアンでなければならない。
+- {}を使うとコンポジットリテラルとしてコンポジット型のインスタンスを生成できる。
+[]color.Color{color.White, color.Black}
+Anim := gif.GIF{LoopCount:nframes}

@@ -2,7 +2,9 @@
 
 import (
     "fmt"
-    "./tempconv"
+    "os"
+    "strconv"
+    "./tmpconv"
 )
 
 func main() {

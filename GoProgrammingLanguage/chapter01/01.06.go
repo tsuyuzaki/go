@@ -1,5 +1,6 @@
 ﻿/**
  * 引数に色(black, white, blue, red, grenn)を指定すると、その色で線を描画する。
+ * サポート外の色が指定された場合、blackが利用される。
  */
 package main
 

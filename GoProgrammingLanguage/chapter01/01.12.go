@@ -72,15 +72,14 @@ func lissajous(out io.Writer, url *url.URL) {
     gif.EncodeAll(out, &anim)
 }
 
-const (
-    cycles  = 5
-    res     = 0.001
-    size    = 100
-    nframes = 64
-    delay   = 8
-)
-
 func parseQuery(query string) *lissajousProps {
+    const (
+        cycles  = 5
+        res     = 0.001
+        size    = 100
+        nframes = 64
+        delay   = 8
+    )
     props := lissajousProps{cycles, res, size, nframes, delay}
     for _, namedValueStr := range strings.Split(query, ",") {
         fillProps(namedValueStr, &props)
@@ -95,15 +94,15 @@ func fillProps(namedValueStr string, props *lissajousProps) {
         return
     }
     if namedValue[0] == "cycles" {
-        props.cycles = parseFloat(namedValue[1], cycles)
+        props.cycles = parseFloat(namedValue[1], props.cycles)
     } else if namedValue[0] == "res" {
-        props.res = parseFloat(namedValue[1], res)
+        props.res = parseFloat(namedValue[1], props.res)
     } else if namedValue[0] == "size" {
-        props.size = parseInt(namedValue[1], size)
+        props.size = parseInt(namedValue[1], props.size)
     } else if namedValue[0] == "nframes" {
-        props.nframes = parseInt(namedValue[1], nframes)
+        props.nframes = parseInt(namedValue[1], props.nframes)
     } else if namedValue[0] == "delay" {
-        props.delay = parseInt(namedValue[1], delay)
+        props.delay = parseInt(namedValue[1], props.delay)
     } else {
         fmt.Printf("[%s] is not supported\n", namedValueStr);
     }

@@ -46,7 +46,7 @@ func colors() []color.Color {
 func indexOf(name string) uint8 {
     for i, namedColor := range namedColors {
         if name == namedColor.name {
-        	return (uint8)(i)
+            return (uint8)(i)
         }
     }
     return 1 // use black

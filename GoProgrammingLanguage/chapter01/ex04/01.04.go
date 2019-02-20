@@ -1,4 +1,10 @@
-﻿package main
+﻿/**
+ * 入力ファイルが Windowsの改行コード CRLF を利用していると、
+ * "\n"のsplitが動作しないので注意！！
+ * LFの改行の入力ファイルを利用すること。
+ */
+
+package main
 
 import (
   "fmt"
@@ -7,11 +13,6 @@ import (
   "strings"
 )
 
-/**
- * 入力ファイルが Windowsの改行コード CRLF を利用していると、
- * "\n"のsplitが動作しないので注意！！
- * LFの改行の入力ファイルを利用すること。
- */
 func main() {
     // https://qiita.com/daigo2010/items/d46975ad6decd8578c45
     counts := make(map[string]map[string]int)

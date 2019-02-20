@@ -11,12 +11,11 @@ import (
     "time"
 )
 
-var palette = []color.Color{color.White, color.Black, color.RGBA{0, 255, 0, 255}}
+var palette = []color.Color{color.Black, color.RGBA{0, 255, 0, 255}}
 
 const (
-    whiteIndex = 0
-    blackIndex = 1
-    greenIndex = 2
+    blackIndex = 0
+    greenIndex = 1
 )
 
 func main() {

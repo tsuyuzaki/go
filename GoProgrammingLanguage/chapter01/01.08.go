@@ -8,12 +8,12 @@ import (
     "strings"
 )
 
-const (
-    prefixHttp = "http://"
-    prefixHttps = "https://"
-)
-
 func main() {
+    const (
+        prefixHttp = "http://"
+        prefixHttps = "https://"
+    )
+
     for _, url := range os.Args[1:] {
         if ! strings.HasPrefix(url, prefixHttp) && ! strings.HasPrefix(url, prefixHttps) {
             url = prefixHttp + url

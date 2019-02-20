@@ -1,5 +1,5 @@
 ﻿/**
- * 01.11.exe https://www.alexa.com/siteinfo/google.com https://www.alexa.com/siteinfo/youtube.com https://www.alexa.com/siteinfo/facebook.com https://www.alexa.com/siteinfo/baidu.com https://www.alexa.com/siteinfo/wikipedia.org https://www.alexa.com/siteinfo/qq.com https://www.alexa.com/siteinfo/tmall.com https://www.alexa.com/siteinfo/yahoo.com https://www.alexa.com/siteinfo/taobao.com https://www.alexa.com/siteinfo/amazon.com
+ * main.exe https://www.alexa.com/siteinfo/google.com https://www.alexa.com/siteinfo/youtube.com https://www.alexa.com/siteinfo/facebook.com https://www.alexa.com/siteinfo/baidu.com https://www.alexa.com/siteinfo/wikipedia.org https://www.alexa.com/siteinfo/qq.com https://www.alexa.com/siteinfo/tmall.com https://www.alexa.com/siteinfo/yahoo.com https://www.alexa.com/siteinfo/taobao.com https://www.alexa.com/siteinfo/amazon.com
  * 以下、実行結果。
 
 1.66s  106612 https://www.alexa.com/siteinfo/tmall.com

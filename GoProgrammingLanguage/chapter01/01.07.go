@@ -17,7 +17,7 @@ func httpGet(url string) *http.Response {
     return resp
 }
 
-func writeBody(resp *http.Response) {
+func writeAndCloseResponse(resp *http.Response) {
     _, err := io.Copy(os.Stdout, resp.Body)
     resp.Body.Close()
     if err != nil {
@@ -29,6 +29,6 @@ func writeBody(resp *http.Response) {
 func main() {
     for _, url := range os.Args[1:] {
         resp := httpGet(url)
-        writeBody(resp)
+        writeAndCloseResponse(resp)
     }
 }

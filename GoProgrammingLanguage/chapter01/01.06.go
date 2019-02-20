@@ -10,18 +10,42 @@ import (
     "math/rand"
     "os"
     "time"
-    "strconv"
 )
 
-var palette = []color.Color{
-    color.Black, 
-    color.RGBA{255, 0, 0, 255}, 
-    color.RGBA{0, 255, 0, 255}, 
-    color.RGBA{0, 0, 255, 255}}
+type namedColor struct {
+    name  string
+    value color.Color
+}
+
+var namedColors = []namedColor{
+namedColor{"white", color.White},
+namedColor{"black", color.Black},
+namedColor{"red",   color.RGBA{255, 0,     0, 255}},
+namedColor{"green", color.RGBA{0,   255,   0, 255}},
+namedColor{"blue",  color.RGBA{0,   0,   255, 255}}}
+
+var palette = colors()
 
 func main() {
     rand.Seed(time.Now().UTC().UnixNano())
     lissajous(os.Stdout)
+}
+
+func colors() []color.Color {
+    colors := []color.Color{}
+    for _, namedColor := range namedColors {
+        colors = append(colors, namedColor.value)
+    }
+    return colors
+}
+
+func indexOf(name string) uint8 {
+    for i, namedColor := range namedColors {
+        if name == namedColor.name {
+        	return (uint8)(i)
+        }
+    }
+    return 1 // use black
 }
 
 func lissajous(out io.Writer) {
@@ -30,11 +54,6 @@ func lissajous(out io.Writer) {
         return
     }
     
-    index, err := strconv.Atoi(os.Args[1])
-    if err != nil || (index < 0 || index >= len(palette)) {
-        fmt.Printf("Please specify valid colorIndex [0 =< index < %d]\n", len(os.Args))
-        return
-    }
     const (
         cycles  = 5
         res     = 0.001
@@ -51,7 +70,7 @@ func lissajous(out io.Writer) {
         for t := 0.0; t < cycles*2*math.Pi; t += res {
             x := math.Sin(t)
             y := math.Sin(t*freq + phase)
-            img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), (uint8)(index))
+            img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), (uint8)(indexOf(os.Args[1])))
         }
 
         phase += 1

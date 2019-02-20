@@ -1,4 +1,7 @@
-﻿package main
+﻿/**
+ * 引数に色(black, white, blue, red, grenn)を指定すると、その色で線を描画する。
+ */
+package main
 
 import (
     "fmt"

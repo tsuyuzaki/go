@@ -1,0 +1,9 @@
+﻿ $ go test -bench=.
+goos: windows
+goarch: amd64
+BenchmarkPopCount-4             2000000000               0.40 ns/op
+BenchmarkPopCountEx03-4         20000000                65.0 ns/op
+BenchmarkPopCountEx04-4         10000000               233 ns/op
+BenchmarkPopCountEx05-4         10000000               121 ns/op
+PASS
+ok        6.360s

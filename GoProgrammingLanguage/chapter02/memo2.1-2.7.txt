@@ -89,6 +89,24 @@
       }
   }
 
-
-
-
+■2.7 スコープ
+- 変数宣言は同じパッケージ内のどのファイルからも参照できるが、importはそのファイル内のみで有効。
+- 個々の宣言が異なるレキシカルスコープにあれば同じ名前を複数宣言できる。が、コードの読み手を混乱させるのであまり利用すべきでない。
+- レキシカルブロックは必ずしも明示的に {} で囲われているわけではない。for文の初期化節など。
+- 異なレキシカルスコープの変数名を := で宣言してしまうと、別の変数扱いになるので注意。
+  var cwd string
+  func init() {
+      cwd, err := os.Getwd() // コンパイルエラー: 未使用: cwd
+      if err != nil {
+          log.Fatalf("os.Getwd failed: %v", err)
+      }
+  }
+- 上記例は init() 内でcwdを利用していると、コンパイルエラーにならずに思わぬバグになりうる。init() 内ではなるべく := を使わないのが良さそう。
+  var cwd string
+  func init() {
+      var err error
+      cwd, err = os.Getwd() // コンパイルエラー: 未使用: cwd
+      if err != nil {
+          log.Fatalf("os.Getwd failed: %v", err)
+      }
+  }

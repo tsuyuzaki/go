@@ -28,9 +28,9 @@ func PopCount(x uint64) int {
 // ex02.03
 func PopCountEx03(x uint64) int {
     cnt := 0
-    byteSize := int(unsafe.Sizeof(x))
-    for i := 0; i < byteSize; i++ {
-        cnt += int(pc[byte(x >> uint64(i * 8))])
+    byteSize := uint64(unsafe.Sizeof(x))
+    for i := uint64(0); i < byteSize; i++ {
+        cnt += int(pc[byte(x >> (i * 8))])
     }
     return cnt
 }
@@ -38,9 +38,9 @@ func PopCountEx03(x uint64) int {
 // ex02.04
 func PopCountEx04(x uint64) int {
     cnt := 0
-    bitSize := int(unsafe.Sizeof(x) * 8)
-    for i := 0; i < bitSize; i++ {
-        cnt += int((x >> uint64(i)) & 1)
+    bitSize := uint64(unsafe.Sizeof(x) * 8)
+    for i := uint64(0); i < bitSize; i++ {
+        cnt += int((x >> i) & 1)
     }
     return cnt
 }

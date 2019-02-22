@@ -22,4 +22,10 @@
   if nan < nan {  // false
   if nan > nan {  // false
 
+■複素数
+- complex64, complex128はそれぞれ実部、虚部がfloat32とfloat64の複素数。
+- x := 1 + 2i のように、iをつけると虚数。var x complex128 := complex(1, 2) と同じ。
+- math.complexパッケージで複素数の算術を行える。
+
+
 

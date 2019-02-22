@@ -74,8 +74,8 @@ func corner(i, j int, query *surfaceQuery) (float64, float64, float64, bool) {
         return 0, 0, 0, false
     }
 
-    sx := float64(query.width)/2 + (x-y)*cos30*xyscale
-    sy := float64(query.height)/2 + (x+y)*sin30*xyscale - z*zscale
+    sx := float64(query.width) / 2 + (x - y) * cos30 * query.xyscale
+    sy := float64(query.height) / 2 + (x + y) * sin30 * query.xyscale - z * query.zscale
     return sx, sy, z, true
 }
 

@@ -4,6 +4,10 @@ import (
     "fmt"
     "math"
     "os"
+    "log"
+    "io"
+    "net/http"
+    "net/url"
 )
 
 const (
@@ -18,46 +22,68 @@ const (
 var sin30, cos30 = math.Sin(angle), math.Cos(angle)
 
 func main() {
-    fmt.Printf("<svg xmlns='http://www.w3.org/2000/svg' "+
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set("Content-Type", "image/svg+xml")
+        writeSurface(w, r.URL)
+    })
+    log.Fatal(http.ListenAndServe("localhost:8000", nil))
+}
+
+func writeSurface(out io.Writer, url *url.URL) {
+    fmt.Fprintf(out, "<svg xmlns='http://www.w3.org/2000/svg' "+
         "style='stroke: grey; fill: white; stroke-width: 0.7' "+
         "width='%d' height='%d'>", width, height)
     for i := 0; i < cells; i++ {
         for j := 0; j < cells; j++ {
-            ax, ay, ok := corner(i+1, j)
+            ax, ay, az, ok := corner(i+1, j)
             if ! ok {
                 continue
             }
-            bx, by, ok := corner(i, j)
+            bx, by, bz, ok := corner(i, j)
             if ! ok {
                 continue
             }
-            cx, cy, ok := corner(i, j+1)
+            cx, cy, cz, ok := corner(i, j+1)
             if ! ok {
                 continue
             }
-            dx, dy, ok := corner(i+1, j+1)
+            dx, dy, dz, ok := corner(i+1, j+1)
             if ! ok {
                 continue
             }
-            fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
-                ax, ay, bx, by, cx, cy, dx, dy)
+            fmt.Fprintf(out, "<polygon points='%g,%g %g,%g %g,%g %g,%g' fill='%s'/>\n",
+                ax, ay, bx, by, cx, cy, dx, dy, getColor((az + bz + cz + dz) / 4))
         }
     }
-    fmt.Println("</svg>")
+    fmt.Fprintln(out, "</svg>")
 }
 
-func corner(i, j int) (float64, float64, bool) {
+func getColor(z float64) string {
+    color := int(0xff * (math.Abs(z)))
+    if color > 0xff {
+        color = 0xff
+    }
+    strColor := fmt.Sprintf("%02x", color)
+
+    if (z > 0) {
+       return ("#" + strColor + "0000")
+    } else {
+       return ("#0000" + strColor)
+    }
+}
+
+func corner(i, j int) (float64, float64, float64, bool) {
     x := xyrange * (float64(i)/cells - 0.5)
     y := xyrange * (float64(j)/cells - 0.5)
 
     z, ok := f(x, y)
     if ! ok {
-        return 0, 0, false
+        return 0, 0, 0, false
     }
 
     sx := width/2 + (x-y)*cos30*xyscale
     sy := height/2 + (x+y)*sin30*xyscale - z*zscale
-    return sx, sy, true
+    return sx, sy, z, true
 }
 
 func f(x, y float64) (float64, bool) {
@@ -67,7 +93,7 @@ func f(x, y float64) (float64, bool) {
         return 0, false
     }
 
-    ret := math.Logb(r) / r
+    ret := math.Sin(r) / r
     if math.IsNaN(ret) || math.IsInf(ret, 0) {
         fmt.Fprintf(os.Stderr, "f(%f, %f) returns invalid value.\n", x, y)
         return 0, false

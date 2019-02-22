@@ -3,6 +3,7 @@
 import (
     "fmt"
     "math"
+    "os"
 )
 
 const (
@@ -22,17 +23,22 @@ func main() {
         "width='%d' height='%d'>", width, height)
     for i := 0; i < cells; i++ {
         for j := 0; j < cells; j++ {
-            /*_, _, az := corner(i+1, j)
-            _, _, bz := corner(i, j)
-            _, _, cz := corner(i, j+1)
-            _, _, dz := corner(i+1, j+1)
-            c := getColor((az + bz + cz + dz) / 4)
-            fmt.Println(c)*/
-            
-            ax, ay, az := corner(i+1, j)
-            bx, by, bz := corner(i, j)
-            cx, cy, cz := corner(i, j+1)
-            dx, dy, dz := corner(i+1, j+1)
+            ax, ay, az, ok := corner(i+1, j)
+            if ! ok {
+                continue
+            }
+            bx, by, bz, ok := corner(i, j)
+            if ! ok {
+                continue
+            }
+            cx, cy, cz, ok := corner(i, j+1)
+            if ! ok {
+                continue
+            }
+            dx, dy, dz, ok := corner(i+1, j+1)
+            if ! ok {
+                continue
+            }
             fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g' fill='%s'/>\n",
                 ax, ay, bx, by, cx, cy, dx, dy, getColor((az + bz + cz + dz) / 4))
         }
@@ -54,18 +60,31 @@ func getColor(z float64) string {
     }
 }
 
-func corner(i, j int) (float64, float64, float64) {
+func corner(i, j int) (float64, float64, float64, bool) {
     x := xyrange * (float64(i)/cells - 0.5)
     y := xyrange * (float64(j)/cells - 0.5)
 
-    z := f(x, y)
+    z, ok := f(x, y)
+    if ! ok {
+        return 0, 0, 0, false
+    }
 
     sx := width/2 + (x-y)*cos30*xyscale
     sy := height/2 + (x+y)*sin30*xyscale - z*zscale
-    return sx, sy, z
+    return sx, sy, z, true
 }
 
-func f(x, y float64) float64 {
+func f(x, y float64) (float64, bool) {
     r := math.Hypot(x, y)
-    return math.Sin(r) / r
+    if math.IsNaN(r) || math.IsInf(r, 0) {
+        fmt.Fprintf(os.Stderr, "f(%f, %f) returns invalid value.\n", x, y)
+        return 0, false
+    }
+
+    ret := math.Sin(r) / r
+    if math.IsNaN(ret) || math.IsInf(ret, 0) {
+        fmt.Fprintf(os.Stderr, "f(%f, %f) returns invalid value.\n", x, y)
+        return 0, false
+    }
+    return ret, true
 }

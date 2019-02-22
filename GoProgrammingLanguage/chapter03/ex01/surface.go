@@ -3,6 +3,7 @@
 import (
     "fmt"
     "math"
+    "os"
 )
 
 const (
@@ -49,8 +50,9 @@ func corner(i, j int) (float64, float64, bool) {
     x := xyrange * (float64(i)/cells - 0.5)
     y := xyrange * (float64(j)/cells - 0.5)
 
-    z, ok := f(x, y)
-    if ! ok {
+    z := f(x, y)
+    if math.IsNaN(z) || math.IsInf(z, 0) {
+        fmt.Fprintf(os.Stderr, "f(x, y) returns invalid value\n")
         return 0, 0, false
     }
 
@@ -59,8 +61,7 @@ func corner(i, j int) (float64, float64, bool) {
     return sx, sy, true
 }
 
-func f(x, y float64) (float64, bool) {
+func f(x, y float64) (float64) {
     r := math.Hypot(x, y)
-    ret := math.Sin(r) / r
-    return ret, (! math.IsNaN(ret))
+    return math.Sin(r) / r
 }

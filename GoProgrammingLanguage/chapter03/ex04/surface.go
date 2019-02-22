@@ -1,4 +1,9 @@
-﻿package main
+﻿/**
+ * top/bottomRGBとしてred, green, blueと、height, widthを指定可能。
+ * http://localhost:8000/?topRGB=green,bottomRGB=red,height=1300,width=300
+ */
+
+package main
 
 import (
     "fmt"
@@ -30,49 +35,37 @@ func main() {
 }
 
 func writeSurface(out io.Writer, url *url.URL) {
+    query := parseQuery(url.RawQuery)
     fmt.Fprintf(out, "<svg xmlns='http://www.w3.org/2000/svg' "+
         "style='stroke: grey; fill: white; stroke-width: 0.7' "+
-        "width='%d' height='%d'>", width, height)
+        "width='%d' height='%d'>", query.width, query.height)
     for i := 0; i < cells; i++ {
         for j := 0; j < cells; j++ {
-            ax, ay, az, ok := corner(i+1, j)
+            ax, ay, az, ok := corner(i+1, j, query)
             if ! ok {
                 continue
             }
-            bx, by, bz, ok := corner(i, j)
+            bx, by, bz, ok := corner(i, j, query)
             if ! ok {
                 continue
             }
-            cx, cy, cz, ok := corner(i, j+1)
+            cx, cy, cz, ok := corner(i, j+1, query)
             if ! ok {
                 continue
             }
-            dx, dy, dz, ok := corner(i+1, j+1)
+            dx, dy, dz, ok := corner(i+1, j+1, query)
             if ! ok {
                 continue
             }
+            c := getColor(((az + bz + cz + dz) / 4), query)
             fmt.Fprintf(out, "<polygon points='%g,%g %g,%g %g,%g %g,%g' fill='%s'/>\n",
-                ax, ay, bx, by, cx, cy, dx, dy, getColor((az + bz + cz + dz) / 4))
+                ax, ay, bx, by, cx, cy, dx, dy, c)
         }
     }
     fmt.Fprintln(out, "</svg>")
 }
 
-func getColor(z float64) string {
-    color := int(0xff * (math.Abs(z)))
-    if color > 0xff {
-        color = 0xff
-    }
-    strColor := fmt.Sprintf("%02x", color)
-
-    if (z > 0) {
-       return ("#" + strColor + "0000")
-    } else {
-       return ("#0000" + strColor)
-    }
-}
-
-func corner(i, j int) (float64, float64, float64, bool) {
+func corner(i, j int, query *surfaceQuery) (float64, float64, float64, bool) {
     x := xyrange * (float64(i)/cells - 0.5)
     y := xyrange * (float64(j)/cells - 0.5)
 
@@ -81,8 +74,8 @@ func corner(i, j int) (float64, float64, float64, bool) {
         return 0, 0, 0, false
     }
 
-    sx := width/2 + (x-y)*cos30*xyscale
-    sy := height/2 + (x+y)*sin30*xyscale - z*zscale
+    sx := float64(query.width)/2 + (x-y)*cos30*xyscale
+    sy := float64(query.height)/2 + (x+y)*sin30*xyscale - z*zscale
     return sx, sy, z, true
 }
 

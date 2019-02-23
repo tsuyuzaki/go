@@ -17,7 +17,7 @@ import (
     "math/cmplx"
     "os"
     "math"
-    //"fmt"
+    "fmt"
 )
 
 const (
@@ -66,5 +66,6 @@ func getColor(i int, abs float64) color.Color {
     } else if i == 3 {
         return color.RGBA{0, 0, 0, value}
     }
+    fmt.Fprintf(os.Stderr, "Invalid index [%d]\n", i)
     return color.RGBA{128, 128, 128, 128}
 }

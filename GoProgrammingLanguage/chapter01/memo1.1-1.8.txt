@@ -1,6 +1,10 @@
 ﻿https://golang.org/dl/
 上記からインストーラをダウンロードしてGoを使えるようにする。
 
+https://play.golang.org/
+簡単なコードを実行したい場合は上記が便利。
+
+
 ■1.1 ハロー、ワールド
 - Goはコンパイル言語で、コンパイルはbuildサブコマンドを使う。
  $ go build xxx.go

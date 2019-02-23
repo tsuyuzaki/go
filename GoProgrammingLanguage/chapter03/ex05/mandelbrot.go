@@ -11,7 +11,7 @@ import (
 
 const (
     xmin, ymin, xmax, ymax = -2, -2, +2, +2
-    width, height          = 512, 512
+    width, height          = 1024, 1024
 )
 
 func main() {
@@ -37,7 +37,6 @@ func mandelbrot(z complex128) color.Color {
         if cmplx.Abs(v) > 2 {
             px := ((real(z) - xmin) * width / (xmax - xmin))
             r := uint8(px / 4)
-            //py := ((imag(z) - ymin) * height / (ymax - ymin))
             g := uint8(math.MaxUint8 * cmplx.Abs(v) / math.Hypot(xmax, ymax))
             b := uint8(math.MaxUint8 * cmplx.Abs(v) / math.Hypot(xmax, ymax))
             return color.RGBA{r, g, b, 128}

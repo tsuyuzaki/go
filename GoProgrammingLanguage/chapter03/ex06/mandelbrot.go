@@ -11,7 +11,7 @@ import (
 
 const (
     xmin, ymin, xmax, ymax = -2, -2, +2, +2
-    width, height          = 512, 512
+    width, height          = 1024, 1024
 )
 
 func main() {

@@ -64,4 +64,19 @@
 - UTF-8でエンコードされた文字列に []rune を適用できる。プログラム中でUTF-8文字列を扱うのに便利。
 
 ■3.5.4 文字列とバイトスライス
+- 文字列は不変のため文字列を少しずつ増やしながら構築することは多数の割り当てとコピーを必要とする。このような場合はbytes.Bufferが有効。
+- strconvパッケージは数値方を文字列変換するなどの関数を提供。
+- unicodeパッケージはルーンを分類するIsDigit, IsLetter, IsUpper, IsLowerなどの関数を提供。各関数は単一のルーンの引数を受け取る。
+- basenameはUnixのユーティリティからヒントを得た機能で、渡されたファイルパスを"/"で要素分割し、拡張子を除いたファイル名を得る。
+  fmt.Println(basename("a/b/c.go") // "c"
+  fmt.Println(basename("c.d.go")   // "c.d"
+  fmt.Println(basename("abc")      // "abc"
+- 文字列 s を用いた []bytes(s) 変換はsのバイトのコピーを保持する新たなバイト配列を割り当てる。コピーによりbytes変換したスライスを操作しても元の s には影響しない。
+- bytesはスライスを効率的に操作するためのBuffer型を提供する。BufferにUTF-8のルーンを書き込む際はWiteRuneを使う。ASCIIであればWriteByteで構わない。
+
+■3.5.5 文字列と数値の変換 
+
+
+
+
 

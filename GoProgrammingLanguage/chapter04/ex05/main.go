@@ -8,6 +8,9 @@ import (
 )
 
 func removeIfNextIsSame(strs []string) []string {
+    if len(strs) == 0 {
+        return strs
+    }
     ret := []string{strs[0]}
     for _, str := range strs[1:] {
         if str != ret[len(ret) - 1] {

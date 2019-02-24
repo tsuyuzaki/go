@@ -7,29 +7,14 @@ import (
     "fmt"
 )
 
-func removeIfNextIsSame(s []string) []string {
-    var prev string
-    isLoopFirst := true
-    dupCnt := 0
-    for i := len(s) - 1; i >= 0; i-- {
-        if isLoopFirst {
-            isLoopFirst = false
-            prev = s[i]
-            continue
+func removeIfNextIsSame(strs []string) []string {
+    ret := []string{strs[0]}
+    for _, str := range strs[1:] {
+        if str != ret[len(ret) - 1] {
+           ret = append(ret, str)
         }
-        if prev == s[i] {
-           swapToLast(s, i)
-           dupCnt++
-        }
-        prev = s[i]
     }
-    return s[:len(s) - dupCnt]
-}
-
-func swapToLast(s []string, i int) {
-    str := s[i]
-    copy(s[i:], s[i + 1:])
-    s[len(s) - 1] = str
+    return ret
 }
 
 func main() {

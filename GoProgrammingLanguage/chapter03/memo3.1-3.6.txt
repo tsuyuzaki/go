@@ -75,8 +75,52 @@
 - bytesはスライスを効率的に操作するためのBuffer型を提供する。BufferにUTF-8のルーンを書き込む際はWiteRuneを使う。ASCIIであればWriteByteで構わない。
 
 ■3.5.5 文字列と数値の変換 
+- strconvを使うほかにfmt.Sprintf()でも数値を文字列変換できる。Sprintfは%b, %xなどのverbを使え、また、数値以外に追加情報を加えられる。
+  x := 123
+  s := fmt.Sprintf("x=%b", x) // "x=1111011"
+- ParseIntは基数 (2進、10進など) と戻り値として許す最大値のbitサイズを指定できる。
 
+■3.6 定数
+- 定数はコンパイル時に評価が行われる式のため実行時の処理を減らす。範囲外インデックスの参照や無限大の浮動小数点演算などのエラーもコンパイル時に検出。★
+- すべての定数の基底型はブーリアン、文字列、数値の基本型。
+- 定数constは () で囲うことができ、関連する定数をグループ化する場合に適する。
+- 定数式の型が明示的に指定されない場合、右辺から推定される。
+- 定数をグループで宣言する場合、最初の定数以外、右辺を省略できる。iota を使うと便利な場面が出てくる。
+  const (
+      a = 1  // 1
+      b      // 1
+      c = 2  // 2
+      d      // 2
+  )
 
-
-
-
+■3.6.1 定数生成器 iota
+- iotaは明示的に毎回書くことなく関連した値を生成するために使う。const宣言で使うとゼロから1ずつ増加する。★
+  type Weekday int
+  const (
+      Sunday Weekend = iota
+      Monday
+      Tuesday
+      ...
+- 以下のような使い方もできる。以下はuintの下位5ビットに別々の名前を付けてブーリアンとして解釈している。
+  type Flags uint
+  const (
+      FlagUp Flag = 1 << iota
+      FlagBroadcast           // func SetBroadcast(v *Flags) { *v != FlagBroadcast } 利用例の実装
+      FlagLoopback
+      FlagPointToPoint
+      FlagMulticast
+  )
+- 1024の累乗に名前を付けた例。
+  const (
+      _ = 1 << (10 * iota)
+      KiB // 1024    (fmt.Printf("%b", KiB) は 10000000000)
+      MiB // 1048576
+      ...
+■3.6.2 型付けなし定数
+- 多くの定数は特定の型に結びついているわけではなく、そのような定数は基本型よりはるかに高い数値精度で表現される。
+- 型への結びつけを遅延させることで、型付けなし定数は高い精度を有し、また、多くの式で変換を必要とせず使える。★
+  var x float32 = math.Pi
+  var y float64 = math.Pi
+  var z complex128 = math.Pi
+- 非対称性に注意。整数の型付けなし定数を望むサイズの型で利用したいときは明示的な変換を使う。
+  var i = int8(0)

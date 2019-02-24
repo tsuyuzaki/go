@@ -1,4 +1,12 @@
-﻿package main
+﻿/**
+ * Ex)
+ * $ go run anagram.go  banana NaNABa
+ * Anagram!!
+ *
+ * $ go run anagram.go  banana Apple
+ * Not anagram
+ */
+package main
 
 import (
     "bytes"

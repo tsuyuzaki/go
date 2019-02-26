@@ -10,7 +10,7 @@ import (
     "unicode"
 )
 
-func removeIfNextIsUnicodeSpace(bs []byte) []byte {
+func removeContinuousUnicodeSpace(bs []byte) []byte {
     runes := bytes.Runes(bs)
     if len(runes) == 0 {
         return bs
@@ -35,5 +35,5 @@ func removeIfNextIsUnicodeSpace(bs []byte) []byte {
 func main() {
     s := "あめんぼ  赤いな　 　あいうえお"
     bs := []byte(s)
-    fmt.Println(string(removeIfNextIsUnicodeSpace(bs)))
+    fmt.Println(string(removeContinuousUnicodeSpace(bs)))
 }

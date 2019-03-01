@@ -16,7 +16,7 @@ func main() {
     }
     f, err := os.Open(os.Args[1])
     if err != nil {
-        fmt.Fprintf(os.Stderr, "os.Open() error [%v]", err)
+        fmt.Fprintf(os.Stderr, "os.Open() error [%v]\n", err)
         os.Exit(1)
     }
     defer f.Close()

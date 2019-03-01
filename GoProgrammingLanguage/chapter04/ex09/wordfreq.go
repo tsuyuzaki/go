@@ -6,43 +6,28 @@
 import (
     "bufio"
     "fmt"
-    "io"
     "os"
-    "unicode"
-    "unicode/utf8"
 )
 
 func main() {
-    counts := make(map[string]map[rune]int)
-    var utflen [utf8.UTFMax + 1]int
-    invalid := 0
+    if len(os.Args) != 2 {
+        fmt.Println("Please input file path")
+        return
+    }
+    f, err := os.Open(os.Args[1])
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "os.Open() error [%v]", err)
+        os.Exit(1)
+    }
+    defer f.Close()
 
-    in := bufio.NewReader(os.Stdin)
-    for {
-        r, n, err := in.ReadRune()
-        if err == io.EOF {
-            break
-        }
-        if err != nil {
-            fmt.Fprintf(os.Stderr, "charcount: %v\n", err)
-            os.Exit(1)
-        }
-        if r == unicode.ReplacementChar && n == 1 {
-            invalid++
-            continue
-        }
-        increment(r, counts)
-        utflen[n]++
+    s := bufio.NewScanner(f)
+    s.Split(bufio.ScanWords)
+
+    counts := make(map[string]int)
+    for s.Scan() {
+        counts[s.Text()]++
     }
-    fmt.Printf("rune\tcount\n")
-    printCounts(counts)
-    fmt.Print("\nlen\tcount\n")
-    for i, n := range utflen {
-        if i > 0 {
-            fmt.Printf("%d\t%d\n", i, n)
-        }
-    }
-    if invalid > 0 {
-        fmt.Printf("\n%d invalid UTF-8 characters\n", invalid)
-    }
+
+    fmt.Println(counts)
 }

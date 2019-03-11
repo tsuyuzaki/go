@@ -107,14 +107,14 @@ func readNewIssueCSV() map[string]string {
     defer f.Close()
     
     s := bufio.NewScanner(f)
-    values := make(map[string]string)
+    input := make(map[string]string)
     for s.Scan() {
         strs := strings.Split(s.Text(), ",")
         if len(strs) == 2 {
-            values[strs[0]] = strs[1]
+            input[strs[0]] = strs[1]
         }
     }
-    return values
+    return input
 }
 
 func postNewIssue(input map[string]string) {

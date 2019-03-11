@@ -9,5 +9,3 @@ import "./github"
 func main() {
     github.PostNewIssue()
 }
-
-

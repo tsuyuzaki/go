@@ -11,11 +11,6 @@ import (
     "strings"
 )
 
-type newIssue struct {
-    Title string `json:"title"`
-    Body  string `json:"body"`
-}
-
 const csvPath = `NewIssue.csv`
 
 func PostNewIssue() {
@@ -93,8 +88,21 @@ func postNewIssue(input map[string]string) {
         os.Exit(1)
     }
 
-    newIssue := newIssue{Title: input["title"], Body: input["body"]}
-    jsonStr, err := json.Marshal(newIssue)
+    token, ok := input["token"]
+    if token == "" {
+        fmt.Fprintf(os.Stderr, "No token\n")
+        os.Exit(1)
+    }
+    if ok {
+        delete(input, "token")
+    }
+    
+    jsonStr, err := json.Marshal(input)
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "json.Marshal err[%v]\n", err)
+        os.Exit(1)
+    }
+    fmt.Println(string(jsonStr))
 
     req, err := http.NewRequest(
         "POST", 
@@ -105,11 +113,6 @@ func postNewIssue(input map[string]string) {
         os.Exit(1)
     }
     req.Header.Set("Content-Type", "application/json")
-    token := input["token"]
-    if token == "" {
-        fmt.Fprintf(os.Stderr, "No token\n")
-        os.Exit(1)
-    }
     req.Header.Set("Authorization", fmt.Sprintf("token %s", token))
 
     client := &http.Client{}

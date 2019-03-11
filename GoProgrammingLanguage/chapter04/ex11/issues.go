@@ -44,8 +44,6 @@ func createIssue() {
         return
     }
 
-    // req.SetBasicAuth("test4golang", "testgithub00")
-
     req.Header.Set("Content-Type", "application/json")
     req.Header.Set("Authorization", "token d6cf41526d51465950e5fa9bc29ed1073b0c1041")
     client := &http.Client{}

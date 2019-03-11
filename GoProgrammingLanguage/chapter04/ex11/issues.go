@@ -45,7 +45,6 @@ func openNewIssueForm() {
     cmd.Wait()
 }
 
-
 func main() {
     clearNewIssueForm()
     openNewIssueForm()
@@ -60,7 +59,6 @@ func readNewIssueCSV() map[string]string {
     }
     defer f.Close()
     
-    
     s := bufio.NewScanner(f)
     values := make(map[string]string)
     for s.Scan() {
@@ -73,7 +71,6 @@ func readNewIssueCSV() map[string]string {
 }
 
 func confirm(input map[string]string, msg string) bool {
-    
     fmt.Printf("Your input:\n%s\n\n%s (Y/N): ", input, msg)
     s := bufio.NewScanner(os.Stdin)
     if ok := s.Scan(); ! ok {
@@ -92,6 +89,9 @@ func confirm(input map[string]string, msg string) bool {
 
 func createNewIssue() {
     input := readNewIssueCSV()
+    if ! confirm(input, "Would you like to create new issue?") {
+        return
+    }
     url := input["URL"]
     if url == "" {
         fmt.Fprintf(os.Stderr, "Invalid URL\n")
@@ -117,9 +117,6 @@ func createNewIssue() {
     }
     req.Header.Set("Authorization", fmt.Sprintf("token %s", token))
 
-    if ! confirm(input, "Would you like to create new issue?") {
-        return
-    }
 
     client := &http.Client{}
     resp, err := client.Do(req)

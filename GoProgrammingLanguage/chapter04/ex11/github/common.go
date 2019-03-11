@@ -76,9 +76,8 @@ func confirm(input map[string]string, msg string) string {
         return "Cancel"
     }
     txt := s.Text()
-    if txt == "Done" || txt == "Cancel" || txt == "Modify" {
-        return txt
-    } else {
+    if txt != "Done" && txt != "Cancel" && txt != "Modify" {
         return confirm(input, msg)
     }
+    return txt
 }

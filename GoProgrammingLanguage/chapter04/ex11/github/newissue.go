@@ -60,9 +60,13 @@ func getNewIssueInput() (map[string]string, bool) {
     answer := confirm(input, "Would you like to create new issue?")
     if answer == "Done" {
         return input, true
+    } else if answer == "Cancel" {
+        return map[string]string{}, false
     } else if answer == "Modify" {
+        input = nil
         return getNewIssueInput()
     } else {
+        fmt.Fprintf(os.Stderr, "Invalid user input[%s]\n", answer)
         return map[string]string{}, false
     }
 }

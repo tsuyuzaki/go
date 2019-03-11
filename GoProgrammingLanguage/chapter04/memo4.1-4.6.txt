@@ -143,12 +143,6 @@
   fmt.Println(titles) // "[{Casablanca} {Cool Hand Luke} ...]"
 - json.Decoderはストリーミングデコーダで同じストリームから複数JSONエンティティを順にデコードできる。対はjson.Encoder。
 
-- curlコマンドで以下でissueを発行できた。--userの後の "user名:token(パスワード)" と URLの "test4golang/test" を適宜変更する。
-  $ curl --user "test4golang:testgithub00" https://api.github.com/repos/test4golang/test/issues -X POST -d '{"title":"test","body":"test"}'
-
-- issue作成で指定可能なJSONのフィールドは以下参照。
-  https://developer.github.com/v3/issues/#create-an-issue
-
 
 ■4.6 テキストテンプレートとHTMLテンプレート
 

@@ -11,8 +11,6 @@ import (
     "strings"
 )
 
-const csvPath = `NewIssue.csv`
-
 func PostNewIssue() {
     clearNewIssueCSV()
     input, ok := getNewIssueInput()
@@ -20,6 +18,40 @@ func PostNewIssue() {
     if ok {
         postNewIssue(input)
     }
+}
+
+const csvPath = `NewIssue.csv`
+
+type newIssue struct {
+    url     string
+    token   string
+    jsonStr []byte
+}
+
+func createNewIssue(input map[string]string) *newIssue {
+    url := input["URL"]
+    if url == "" {
+        fmt.Fprintf(os.Stderr, "No URL\n")
+        return nil
+    }
+    token, ok := input["token"]
+    if token == "" {
+        fmt.Fprintf(os.Stderr, "No token\n")
+        return nil
+    }
+    if ok {
+        delete(input, "token")
+    }
+    
+    jsonStr, err := json.Marshal(input)
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "json.Marshal err[%v]\n", err)
+        return nil
+    }
+
+    return &newIssue{url: url, 
+        token: fmt.Sprintf("token %s", token), 
+        jsonStr: jsonStr}
 }
 
 func getNewIssueInput() (map[string]string, bool) {
@@ -82,38 +114,20 @@ func readNewIssueCSV() map[string]string {
 }
 
 func postNewIssue(input map[string]string) {
-    url := input["URL"]
-    if url == "" {
-        fmt.Fprintf(os.Stderr, "Invalid URL\n")
+    issue := createNewIssue(input)
+    if issue == nil {
         os.Exit(1)
     }
-
-    token, ok := input["token"]
-    if token == "" {
-        fmt.Fprintf(os.Stderr, "No token\n")
-        os.Exit(1)
-    }
-    if ok {
-        delete(input, "token")
-    }
-    
-    jsonStr, err := json.Marshal(input)
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "json.Marshal err[%v]\n", err)
-        os.Exit(1)
-    }
-    fmt.Println(string(jsonStr))
-
     req, err := http.NewRequest(
         "POST", 
-        url,
-        bytes.NewBuffer([]byte(jsonStr)))
+        issue.url,
+        bytes.NewBuffer([]byte(issue.jsonStr)))
     if err != nil {
         fmt.Fprintf(os.Stderr, "http.NewRequest() %v\n", err)
         os.Exit(1)
     }
     req.Header.Set("Content-Type", "application/json")
-    req.Header.Set("Authorization", fmt.Sprintf("token %s", token))
+    req.Header.Set("Authorization", issue.token)
 
     client := &http.Client{}
     resp, err := client.Do(req)

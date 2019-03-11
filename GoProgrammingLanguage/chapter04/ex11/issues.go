@@ -27,25 +27,25 @@ func main() {
 }
 
 func createIssue() {
-    body := github.Issue{Title:"golang test", Body:"golang test body"}
+    /*body := github.Issue{Title:"golang test", Body:"golang test body"}
     data, err := json.Marshal(body)
     if err != nil {
         fmt.Fprintf(os.Stderr, "http.NewRequest() %v", err)
         return
     }
-    fmt.Printf("%s\n", data)
+    fmt.Printf("%s\n", data)*/
 
     req, err := http.NewRequest(
         "POST", 
         "https://api.github.com/repos/test4golang/test/issues",
-        bytes.NewBuffer([]byte("{\"title\":\"golang test\",\"body\":\"golang test body\"}")))
+        bytes.NewBuffer([]byte("{\"title\":\"golang test hoge\",\"body\":\"golang test body hogehoge\"}")))
     if err != nil {
         fmt.Fprintf(os.Stderr, "http.NewRequest() %v", err)
         return
     }
 
     req.Header.Set("Content-Type", "application/json")
-    req.Header.Set("Authorization", "token d6cf41526d51465950e5fa9bc29ed1073b0c1041")
+    req.Header.Add("Authorization", "token 40100310077b2ac52363fff59af4504952adabf9")
     client := &http.Client{}
     resp, err := client.Do(req)
     if err != nil {
@@ -60,4 +60,5 @@ func createIssue() {
         return
     }
     fmt.Println(ioutil.ReadAll(resp.Body))
+    fmt.Println(resp.Status)
 }

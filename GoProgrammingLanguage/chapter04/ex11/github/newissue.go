@@ -11,7 +11,8 @@ import (
 func PostNewIssue() {
     const (
         newIssueCSVPath = `NewIssue.csv`
-        formData = `URL,https://api.github.com/repos/test4golang/test/issues
+        formData = 
+`URL,https://api.github.com/repos/test4golang/test/issues
 token,
 title,
 body,`

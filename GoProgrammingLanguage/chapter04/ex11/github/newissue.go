@@ -20,12 +20,24 @@ const csvPath = `NewIssue.csv`
 
 func PostNewIssue() {
     clearNewIssueCSV()
+    input, ok := getNewIssueInput()
+    clearNewIssueCSV()
+    if ok {
+        postNewIssue(input)
+    }
+}
+
+func getNewIssueInput() (map[string]string, bool) {
     openNewIssueCSV()
     input := readNewIssueCSV()
-    if ! confirm(input, "Would you like to create new issue?") {
-        return
+    answer := confirm(input, "Would you like to create new issue?")
+    if answer == "Done" {
+        return input, true
+    } else if answer == "Modify" {
+        return getNewIssueInput()
+    } else {
+        return map[string]string{}, false
     }
-    postNewIssue(input)
 }
 
 func clearNewIssueCSV() {

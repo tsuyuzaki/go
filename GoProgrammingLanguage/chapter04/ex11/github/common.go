@@ -4,10 +4,12 @@ import (
     "fmt"
     "bufio"
     "os"
+    "encoding/json"
 )
 
 func confirm(input map[string]string, msg string) bool {
-    fmt.Printf("Your input:\n%s\n\n%s (Y/N): ", input, msg)
+    jsonstr, _ := json.MarshalIndent(input, "", "    ")
+    fmt.Printf("Your input:\n%s\n\n%s (Y/N): ", jsonstr, msg)
     s := bufio.NewScanner(os.Stdin)
     if ok := s.Scan(); ! ok {
         fmt.Fprintf(os.Stderr, "Scan error\n")

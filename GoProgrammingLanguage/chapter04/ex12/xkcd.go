@@ -44,7 +44,7 @@ func getXKCDURL(i int) string {
     return fmt.Sprintf("https://xkcd.com/%d/info.0.json", i)
 }
 
-func getXKCDs() []XKCD {
+func getXKCDs() []*XKCD {
     const maxcnt = 1000
     
     ch := make(chan string)
@@ -52,19 +52,19 @@ func getXKCDs() []XKCD {
         url := getXKCDURL(i)
         go fetch(url, ch)
     }
-    xkcds := []XKCD{}
+    xkcds := []*XKCD{}
     for i := 1; i < maxcnt; i++ {
         var xkcd XKCD
         if err := json.Unmarshal([]byte(<-ch), &xkcd); err != nil {
             fmt.Fprintf(os.Stderr, "json.Unmarshal() error [%v]\n", err)
             continue
         }
-        xkcds = append(xkcds, xkcd)
+        xkcds = append(xkcds, &xkcd)
     }
     return xkcds
 }
 
-func search(query string, xkcds []XKCD) {
+func search(query string, xkcds []*XKCD) {
     if query == "" {
         return
     }

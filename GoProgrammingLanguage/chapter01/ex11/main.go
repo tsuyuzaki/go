@@ -1,4 +1,8 @@
 ﻿/**
+ * alexa.com にある上位100万件のウェブサイトのように、より長い引数リストで fetchall を試しなさい。
+ * あるウェブサイトが応答しない場合には、プログラムはどのように振る舞うでしょうか。
+ * (そのような場合に対処するための機構は8.9節で説明されています。)
+ * 
  * main.exe https://www.alexa.com/siteinfo/google.com https://www.alexa.com/siteinfo/youtube.com https://www.alexa.com/siteinfo/facebook.com https://www.alexa.com/siteinfo/baidu.com https://www.alexa.com/siteinfo/wikipedia.org https://www.alexa.com/siteinfo/qq.com https://www.alexa.com/siteinfo/tmall.com https://www.alexa.com/siteinfo/yahoo.com https://www.alexa.com/siteinfo/taobao.com https://www.alexa.com/siteinfo/amazon.com
  * 以下、実行結果。
 

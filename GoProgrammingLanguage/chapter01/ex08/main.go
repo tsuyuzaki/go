@@ -1,5 +1,6 @@
 /**
- * fetch を修正して、resp.Status に設定されている HTTP ステータスコードも表示するようにしなさい。
+ * fetch を修正して、個々の引数の URL に接頭辞 http:// がなければ追加するようにしなさい。
+ * strings.HasPrefix を使いたくなるかもしれません。
  */
 package main
 

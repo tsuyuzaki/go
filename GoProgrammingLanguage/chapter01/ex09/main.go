@@ -1,4 +1,7 @@
-﻿package main
+/**
+ * fetch を修正して、resp.Status に設定されている HTTP ステータスコードも表示するようにしなさい。
+ */
+package main
 
 import (
     "fmt"

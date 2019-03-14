@@ -1,4 +1,8 @@
 ﻿/**
+ * リサジュー図形のサーバを修正して、URL からパラメータ値を読み取るようにしなさい。
+ * たとえば、http://localhost:8000/?cycles=20 のような URL では、集会の回数をデフォルトの5ではなく20に設定するようにしなさい。
+ * 文字列パラメータを整数へ変換するためにstrconv.Atoi 関数を使いなさい。その変換関数のドキュメントは go doc strconv.Atoi で見ることができます。
+ * 
  * URLのqueryとしてcycles, res, size, nframes, delayを指定可能。
  * 以下が指定の例。
  * http://localhost:8000/?cycles=10,size=200,res=0.0001,nframes=128,delay=4

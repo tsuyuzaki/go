@@ -1,4 +1,9 @@
-﻿package main
+/**
+ * 関数呼び出し io.Copy(dst, src) は、src から読み込み dst へ書き込みます。
+ * ストリーム全体を保持するのに十分な大きさのバッファを要求することなくレスポンスの内容を os.Stdout へコピーするために、
+ * ioutil.ReadAll の代わりにその関数を使いなさい。ない、io.Copy のエラー結果は必ず検査するようにしなさい。
+ */
+package main
 
 import (
     "fmt"

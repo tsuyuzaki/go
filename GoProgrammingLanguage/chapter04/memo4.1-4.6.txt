@@ -146,7 +146,39 @@
 - アンダースコアがJSONの名前にありGoの名前にない時だけフィールドタグを使う必要がある。
 
 ■4.6 テキストテンプレートとHTMLテンプレート
+- Printfより複雑なフォーマットを扱いたい場合には text/template と html/template パッケージのテンプレートを使う。
+- テンプレートには {{...}} で囲まれたアクションを含む。テンプレートの文字列のほとんどはそのまま表示されるが、アクションは他の振舞を引き起こす。
+  const templ = `{{.TotalCount}} issues:
+  {{range .Items}}--------------------------
+  Number: {{.Number}}
+  User:   {{.User.Login}}
+  Title:  {{.Title | printf "%.64s"}}
+  Age:    {{.CreatedAt | daysAgo}} days
+  {{end}}`
+- アクション内の . は最初にテンプレートのパラメータを参照する。(上記は IssueSearchResult を対象としており、{{.TotalCount}} は TotalCount フィールドが展開される。)
+- {{range .Items}} と {{end}} はループを生成し、その間のテキストは複数回展開される。
+- Ageの操作はCreatedAtのtime.Time の値を | で daysAgo関数に渡し経過時間に変換する操作を表す。daysAgo関数は以下。
+  func daysAgo(t time.Time) int {
+      return int(time.Since(t).Hours() / 24)
+  }
+- テンプレートはパースして適切な内部表現にする必要がある。また、Funcsでテンプレートにアクセス可能な関数の集まりを追加する。
+  report, err := template.New("repost").
+      Funcs(template.FuncMap{"daysAgo": daysAgo}).
+      Parse(templ)
+  if err != nil {
+      log.Fatal(err)
+  }
+- template.Must を使うとテンプレートのパースのエラーを検査 (エラー時にパニックになる) し、テンプレートを返す。
+  var report = template.Must(template.New("issuelist").
+      Funcs(template.FuncMap({"daysAgo": daysAgo}).
+      Parse(templ))
+  
+  func main() {
+      result, _ := github.SearchIssues(os.Args[1:]) // err 処理省略。
+      if err := report.Execute(os.Stdout, result); err != nil {
+          ...
 
-
+- http/template は text/template と同じ表現を使い、HTML, JavaScript, CSS, URL内に出現する文字列を自動で文脈上適切にエスケープ処理する機能が追加されたもの。
+- http/template は HTML のインジェクション攻撃を避けるのに役立つ。"&lt;" が '<' として表示されたり、"<link>" がリンク要素になるHTMLドキュメントの構造を変えるセキュリティ問題を防げる。★
 
 

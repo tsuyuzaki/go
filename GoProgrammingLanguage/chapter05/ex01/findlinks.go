@@ -1,5 +1,7 @@
 ﻿/**
  * ループの代わりに visit への再起呼び出しを使って n.FirstChild リンクリストを走査するように findlinks プログラムを変更しなさい。
+ *
+ * $ go run fetch.go https://golang.org | go run findlinks.go
  */
 package main
 

@@ -1,54 +1,47 @@
 ﻿/**
- * 一か月未満、一年未満、一年以上の期間で分類された結果を報告するようにissuesを修正しなさい。
+ * GitHubへの一度の問い合わせで、バグレポート、マイルストーン、ユーザの一覧を閲覧可能にするウェブサーバを作りなさい。
  */
 package main
 
 import (
     "log"
-    "fmt"
-    "os"
-    "time"
+    "net/http"
+    "html/template"
     "./github"
 )
 
-const (
-    daySec = 60 * 60 * 24
-    monthSec = 30 * daySec
-    yearSec = daySec * 365
-)
+var issuerList = template.Must(template.New("ussuelist").Parse(`
+<h1>{{.TotalCount}} issues</h1>
+<table>
+<tr style='text-align: left'>
+    <th>#</th>
+    <th>Statue</th>
+    <th>User</th>
+    <th>Title</th>
+</tr>
+{{range .Items}}
+<tr>
+    <td><a href='{{.HTMLURL}}'>{{.Number}}</a></td>
+    <td>{{.State}}</td>
+    <td><a href='{{.User.HTMLURL}}'>{{.User.Login}}</a></td>
+    <td><a href='{{.HTMLURL}}'>{{.Title}}</a></td>
+</tr>
+{{end}}
+</table>
+`))
 
-func print(description string, issues []*github.Issue){
-    fmt.Println(description)
-    for _, issue := range issues {
-        fmt.Printf("#%-5d %9.9s %.55s %v\n", 
-            issue.Number, issue.User.Login, issue.Title, issue.CreatedAt)
-    }
-}
+// var args = []string{"repo:golang/go", "3133", "10535"}
+var args = []string{"repo:golang/go", "commenter:gopherbot", "json", "encoder"}
 
 func main() {
-    result, err := github.SearchIssues(os.Args[1:])
-    if err != nil {
-        log.Fatal(err)
-    }
-    fmt.Printf("$d issues:\n", result.TotalCount)
-    
-    var ItemsWithin1Month []*github.Issue
-    var ItemsWithin1Year []*github.Issue
-    var ItemsOverYear []*github.Issue
-
-    now := time.Now().Unix()
-    for _, item := range result.Items {
-        diff := now - item.CreatedAt.Unix()
-        if diff < monthSec {
-            ItemsWithin1Month = append(ItemsWithin1Month, item)
-        } else if diff < yearSec {
-            ItemsWithin1Year = append(ItemsWithin1Year, item)
-        } else {
-            ItemsOverYear = append(ItemsOverYear, item)
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        issues, err := github.SearchIssues(args)
+        if err != nil {
+            log.Fatal(err)
         }
-    }
-
-    print("---- Within 1 month ----", ItemsWithin1Month)
-    print("---- Within 1 year ----", ItemsWithin1Year)
-    print("---- Over year ----", ItemsOverYear)
+        if err := issuerList.Execute(w, issues); err != nil {
+            log.Fatal(err)
+        }
+    })
+    log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }

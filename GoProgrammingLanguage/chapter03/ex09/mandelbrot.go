@@ -1,5 +1,6 @@
-﻿// ex: http://localhost:8000/?x=1&y=1&contrast=3
-
+﻿/**
+ * ex: http://localhost:8000/?x=1&y=1&contrast=3
+ */
 package main
 
 import (
@@ -84,3 +85,4 @@ func mandelbrot(z complex128, q *query) color.Color {
     }
     return color.Black
 }
+

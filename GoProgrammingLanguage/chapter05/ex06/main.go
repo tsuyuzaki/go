@@ -1,5 +1,5 @@
 ﻿/**
- * countWordsAndImages を実装しなさい(単語の分割については練習問題 4.9 を参照)。
+ * gopl.io/ch3/surface (3.1節) の corner 関数を修正して、名前付き結果と空リターン文を使うようにしなさい。
  */
 package main
 

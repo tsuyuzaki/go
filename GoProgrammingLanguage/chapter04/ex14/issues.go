@@ -1,13 +1,13 @@
-﻿/**
+/**
  * GitHubへの一度の問い合わせで、バグレポート、マイルストーン、ユーザの一覧を閲覧可能にするウェブサーバを作りなさい。
  */
 package main
 
 import (
-    "log"
-    "net/http"
-    "html/template"
-    "./github"
+	"./github"
+	"html/template"
+	"log"
+	"net/http"
 )
 
 var issuerList = template.Must(template.New("ussuelist").Parse(`
@@ -34,14 +34,14 @@ var issuerList = template.Must(template.New("ussuelist").Parse(`
 var args = []string{"repo:golang/go", "commenter:gopherbot", "json", "encoder"}
 
 func main() {
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        issues, err := github.SearchIssues(args)
-        if err != nil {
-            log.Fatal(err)
-        }
-        if err := issuerList.Execute(w, issues); err != nil {
-            log.Fatal(err)
-        }
-    })
-    log.Fatal(http.ListenAndServe("localhost:8000", nil))
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		issues, err := github.SearchIssues(args)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if err := issuerList.Execute(w, issues); err != nil {
+			log.Fatal(err)
+		}
+	})
+	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }

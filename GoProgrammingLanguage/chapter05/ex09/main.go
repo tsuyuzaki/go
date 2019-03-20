@@ -40,7 +40,7 @@ func expand(s string, f func(string) string) string {
 	in.Split(bufio.ScanWords)
 	for in.Scan() {
 		txt := in.Text()
-		if txt[0] == '$' && ! contains(txt, trgs) {
+		if txt[0] == '$' && !contains(txt, trgs) {
 			trgs = append(trgs, txt)
 		}
 	}

@@ -11,19 +11,6 @@ import (
 	"strings"
 )
 
-func main() {
-	fmt.Println(expand("$hoge $hogeg $ho", strings.ToUpper))
-}
-
-func contains(s string, ss []string) bool {
-	for _, str := range ss {
-		if str == s {
-			return true
-		}
-	}
-	return false
-}
-
 type targets []string
 
 func (t targets) Len() int {
@@ -38,19 +25,32 @@ func (t targets) Less(i, j int) bool {
 	return t[i] > t[j]
 }
 
+func contains(s string, ss []string) bool {
+	for _, str := range ss {
+		if str == s {
+			return true
+		}
+	}
+	return false
+}
+
 func expand(s string, f func(string) string) string {
-	targets := targets{}
+	trgs := targets{}
 	in := bufio.NewScanner(strings.NewReader(s))
 	in.Split(bufio.ScanWords)
 	for in.Scan() {
 		txt := in.Text()
-		if txt[0] == '$' && !contains(txt, targets) {
-			targets = append(targets, txt)
+		if txt[0] == '$' && ! contains(txt, trgs) {
+			trgs = append(trgs, txt)
 		}
 	}
-	sort.Sort(targets)
-	for _, old := range targets {
+	sort.Sort(trgs) // $ho, $hogeがある場合、$hogeから置換するため。
+	for _, old := range trgs {
 		s = strings.Replace(s, old, f(old[1:]), -1)
 	}
 	return s
+}
+
+func main() {
+	fmt.Println(expand("$hoge $hogeg $ho", strings.ToUpper))
 }

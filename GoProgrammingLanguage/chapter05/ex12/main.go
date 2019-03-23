@@ -28,9 +28,23 @@ func outline(url string) error {
 	if err != nil {
 		return err
 	}
-
-	pre, post := getFuncs()
-	forEachNode(doc, pre, post)
+	
+	var depth int
+	startElement := func(n *html.Node) {
+		if n.Type == html.ElementNode {
+			fmt.Printf("%*s<%s>\n", depth*2, "", n.Data)
+			depth++
+		}
+	}
+	
+	endElement := func(n *html.Node) {
+		if n.Type == html.ElementNode {
+			depth--
+			fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
+		}
+	}
+	
+	forEachNode(doc, startElement, endElement)
 
 	return nil
 }
@@ -49,20 +63,3 @@ func forEachNode(n *html.Node, pre, post func(n *html.Node)) {
 	}
 }
 
-func getFuncs() (func(n *html.Node), func(n *html.Node)) {
-	var depth int
-	startElement := func(n *html.Node) {
-		if n.Type == html.ElementNode {
-			fmt.Printf("%*s<%s>\n", depth*2, "", n.Data)
-			depth++
-		}
-	}
-	
-	endElement := func(n *html.Node) {
-		if n.Type == html.ElementNode {
-			depth--
-			fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
-		}
-	}
-	return startElement, endElement
-}

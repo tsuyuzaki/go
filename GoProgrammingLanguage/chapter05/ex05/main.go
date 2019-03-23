@@ -14,7 +14,7 @@ import (
 
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Fprintf(os.Stderr, "Please specify url.\n\tUsage: go run main.go https://golang.org")
+		fmt.Fprintf(os.Stderr, "Please specify url.\n\tUsage: go run main.go https://golang.org\n")
 		return
 	}
 	words, images, err := CountWordsAndImages(os.Args[1])

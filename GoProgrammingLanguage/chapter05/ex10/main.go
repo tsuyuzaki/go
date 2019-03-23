@@ -28,15 +28,13 @@ var prereqs = map[string]map[string]bool{
 }
 
 func main() {
-	var i int
-	for course, _ := range topoSort(prereqs) {
+	for i, course := range topoSort(prereqs) {
 		fmt.Printf("%d:\t%s\n", i+1, course)
-		i++
 	}
 }
 
-func topoSort(m map[string]map[string]bool) map[string]bool {
-	order := make(map[string]bool)
+func topoSort(m map[string]map[string]bool) []string {
+	var order []string
 	seen := make(map[string]bool)
 	var visitAll func(items map[string]bool)
 
@@ -45,7 +43,7 @@ func topoSort(m map[string]map[string]bool) map[string]bool {
 			if !seen[item] {
 				seen[item] = true
 				visitAll(m[item])
-				order[item] = true
+				order = append(order, item)
 			}
 		}
 	}

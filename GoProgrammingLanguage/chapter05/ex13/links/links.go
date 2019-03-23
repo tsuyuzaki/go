@@ -10,14 +10,13 @@ import (
 	"golang.org/x/net/html"
 )
 
-func writeFileIfOrigHost(b []byte, rawurl string, isOrigHost bool) error {
-	if ! isOrigHost {
-		return nil
-	}
-
+func writeFileIfOrigHost(b []byte, rawurl string, origHosts map[string]bool) error {
 	parsed, err := url.Parse(rawurl)
 	if err != nil {
 		return fmt.Errorf("url.Parse(%s) error [%v]", rawurl, err)
+	}
+	if origHosts[parsed.Host] {
+		return nil
 	}
 	path := "./got" + parsed.Path
 	if err := os.MkdirAll(path, 0777); err != nil {
@@ -30,7 +29,7 @@ func writeFileIfOrigHost(b []byte, rawurl string, isOrigHost bool) error {
 	return nil
 }
 
-func Extract(rawurl string, isOrigHost bool) ([]string, error) {
+func Extract(rawurl string, origHosts map[string]bool) ([]string, error) {
 	resp, err := http.Get(rawurl)
 	if err != nil {
 		return nil, err
@@ -66,7 +65,7 @@ func Extract(rawurl string, isOrigHost bool) ([]string, error) {
 	}
 	forEachNode(doc, visitNode, nil)
 
-	return links, writeFileIfOrigHost(b, rawurl, isOrigHost)
+	return links, writeFileIfOrigHost(b, rawurl, origHosts)
 }
 
 func forEachNode(n *html.Node, pre, post func(n *html.Node)) {

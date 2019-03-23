@@ -46,11 +46,7 @@ func breadthFirst(f func(item string, origHosts map[string]bool) []string, workl
 
 func crawl(rawurl string, origHosts map[string]bool) []string {
 	fmt.Println(rawurl)
-	parsed, err := url.Parse(rawurl)
-	if err != nil {
-		fmt.Println(err)
-	}
-	list, err := links.Extract(rawurl, origHosts[parsed.Host])
+	list, err := links.Extract(rawurl, origHosts)
 	if err != nil {
 		fmt.Println(err)
 	}

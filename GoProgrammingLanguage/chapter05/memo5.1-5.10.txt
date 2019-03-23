@@ -135,6 +135,29 @@
   order = append(order, array...)
 - 可変個引数として interface{}型を使うと、最後の引数に対してすべての型を受け付けることができることを意味する。
 
+■5.8 遅延関数呼び出し
+- defer 文は、関数やメソッド呼び出しの前に予約語 defer を付けたもので、予約語 defer を付けた関数、メソッドの呼び出しは、defer 文を含む関数が完了するまで遅延される。★
+- return を実行したり関数の最後に到達したりという正常な完了ではないパニックなどの異常な完了でも defer は正常に動作する。★
+- 遅延関数呼び出しは、遅延された順序の逆順に実行される。
+- defer文はオープンとクローズ、接続と切断、ロックとアンロックのように一対になる操作で使われることが多い。デバッグでのログだし(関数に入った、出たを対にする)場合にも使う。★
+  func hoge() {
+      defer trace("hoge")() // traceの戻りはfuncなので、最後に()を忘れないこと。
+      .... // hoge() の関数本体処理
+  }
+
+  func trace(msg string) func() {
+      start := time.Now()
+      log.Printf("enter %s", msg)
+      return func() { log.Printf("exit %s (%s)", msg, time.Since(start)) }
+  }
+- クロージャと組み合わせると関数の処理結果を表示することなどもできる。★
+  func double(x int) (result int) { // 戻り値に名前を付けていることに注意！！
+      defer func() { fmt.Printf("double(%d) = %d\n", x, result) }()
+      return x + x
+  }
+
+  _ = double(4) // defer により、"double(4) = 8" が表示される。
+
 
 
 

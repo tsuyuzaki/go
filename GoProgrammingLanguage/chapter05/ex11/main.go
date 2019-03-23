@@ -63,8 +63,7 @@ func topoSort(m map[string]map[string]bool) ([]string, error) {
 			}
 			if !seen[item] {
 				related[item] = true
-				err := visitAll(m[item])
-				if err != nil {
+				if err := visitAll(m[item]); err != nil {
 					return err
 				}
 				order = append(order, item)

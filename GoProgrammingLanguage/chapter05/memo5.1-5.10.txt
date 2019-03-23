@@ -92,5 +92,34 @@
   f := squre
   f = product // エラー: func(int, int) int を func(int) int へ代入できない。
 
+■5.6 無名関数
+- 関数リテラルは関数宣言のように書くが、func予約語の後に名前がない。関数リテラルは式であり、その値は無名関数と呼ばれる。
+  strings.Map(func(f, rune) rune { return r + 1 }, "HAL-9000")
+- 無名関数はレキシカルな環境の全体へアクセスできる(無名関数を囲うスコープ内の変数にアクセスできる)。★
+  func squares() func() int { // (func() int) が戻りの関数。
+      var x int
+      return func() { // squares() 関数のローカル変数 x にアクセスできる。
+          x++
+          return x * x
+      }
+  }
+  func main() {
+      f := squares()
+      fmt.Println(f()) // 1
+      fmt.Println(f()) // 4
+      fmt.Println(f()) // 9
+- squares の例は関数値が単なるコードではなく状態を持つことを示す。★
+- 無名内部関数はそれを囲む関数のローカル変数にアクセス可能。このような関数値はクロージャと呼ばれる技法で実装されており、Goプログラマの多くはその用語を関数値に対して使っている。
+- 無名関数が再起を必要とする場合、最初に宣言する必要がある。
+  var visitAll func(items []string)
+  visitAll = func(items []string) {
+      for _, item := range items {
+          if !seen[item] {
+              seen[item] = true
+              visitAll(m[item])
+              order = append(order, item)
+          }
+      }
+  }
 
 

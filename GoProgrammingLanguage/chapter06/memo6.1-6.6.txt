@@ -1,0 +1,20 @@
+﻿■6.1 メソッド宣言
+- この本では、オブジェクトはメソッドを持つ単なる値あるいは変数で、メソッドは特定の方に関連付けられた関数。
+- メソッドは普通の関数宣言の変形で宣言され、そこでは関数名の前に追加のパラメータが書かれる。そのパラメータが当のパラメータの型へ関数を結びつける。
+  type Point struct { X, Y float64 }
+  
+  func Distance(p, q Point) float64 { // 昔ながらの関数
+      return math.Hypot(q.X-p.X, q.Y-p.Y)
+  }
+  
+  func (p Point) Distance(q Point) float64 // Point型のメソッド
+      return math.Hypot(q.X-p.X, q.Y-p.Y)
+  }
+  p := Point{1, 2}
+  q := Point{4, 6}
+  fmt.Println(p.Distance(q)) // "5", メソッド呼び出し。
+- 上記メソッドの p はレシーバと呼ばれる。Goではレシーバに対し、this や self などの特別な名前は使わない。
+- レシーバ名は頻繁に使われるので短くメソッド間で一貫するのが望ましく、Pointに対する p など、型名の頭文字などよく利用される。
+- 
+
+

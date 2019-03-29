@@ -71,5 +71,57 @@
 - レシーバ値として nil を許すメソッドを持つ型を定義する場合、ドキュメンテーションコメントで明示すべき。★
 
 ■6.3 構造体埋め込みによる型の合成
+- 構造体を埋め込んだ(無名フィールドを利用)構造体は、埋め込まれた構造体のフィールドに直接アクセスできる。埋め込まれた構造体のメソッドは埋め込んだ構造体に 格上げ される。
+  type Point struct{ X, Y float64 }
+  func (p *Point) ScaleBy(factor float64) {
+      p.X *= factor
+      p.Y *= factor
+  }
+  type ColoredPoint struct {
+      Point // 無名フィールドとして Point を利用。
+      Color color.RGBA
+  }
+  var cp ColoredPoint
+  cp.X = 1 // OK
+  fmt.Println(cp.Point.X) // "1"
+  cp.ScaleBy(2) // OK
+- ColoredPoint と Point の関係は "is a"(継承関係) ではなく "has a"。Point を引数にする関数やメソッドに ColoredPoint は使えない。★
+- 無名フィールドの型は名前付き型へのポインタでもよい。その場合もフィールドとメソッドは格上げされる。
+- 埋め込みのおかげで名前なし構造体型がメソッドを持つことができる。以下の例は機能的に同じ実装だが、後者のほうが可読性が高くなる。
+  var (
+      mu sync.Mutex
+      mapping = make(map[string]string)
+  )
+  func Lookup(key string) string {
+      mu.Lock()
+      v := mapping[key]
+      mu.Unlock()
+      return v
+  }
+
+
+  var cache = struct { // 名前なし構造体
+      sync.Mutex // sync.Mutex を埋め込み。
+      mapping map[string]string
+  } {
+      mapping: make(map[string]string)
+  }
+  func Lookup(key string) string {
+      cache.Lock()
+      v := cache.mapping[key]
+      cache.Unlock()
+      return v
+  }
+
+■6.4 メソッド値とメソッド式
+- p.ScaleByなどは特定のレシーバ p に結びついたメソッド値と呼ぶ。メソッド値を利用するとレシーバ値なしで関数呼び出しできる。
+  distanceFromP = p.Distance
+  fmt.Println(distanceFromP(q)) // p.Distance(q) と同じ呼び出し。
+- 名前付き構造体 T があり、fというメソッドを持つ場合、T.f または (*T).f をメソッド式と呼ぶ。レシーバの代わりをする普通の第一パラメータを持つ関数値を生成する。
+  distance := Point.Distance
+  fmt.Println(distance(p, q)) // p.Distance(q) と同じ呼び出し。
+
+■6.5 例：ビットベクタ型
+- ビットベクタは符号なし整数値のスライス「複数ワード」を使う。個々のビットはセット内の可能な要素を表す。そのセットは i 番目のビットが設定されていれば i を含む。
 
 

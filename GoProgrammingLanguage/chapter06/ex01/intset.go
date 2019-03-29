@@ -12,7 +12,7 @@ import (
 	"bytes"
 	"fmt"
 	"math"
-	"./popcount"
+	"../popcount"
 )
 
 

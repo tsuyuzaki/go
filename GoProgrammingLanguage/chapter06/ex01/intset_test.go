@@ -35,7 +35,7 @@ func removeTest(s *IntSet, x int) bool {
 	}
 }
 
-func TestIntSet(t *testing.T) {
+func Test6_1(t *testing.T) {
 	const maxLen = 3 * 64
 
 	s := IntSet{}

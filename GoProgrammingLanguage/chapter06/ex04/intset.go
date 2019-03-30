@@ -6,7 +6,6 @@ package intset
 import (
 	"bytes"
 	"fmt"
-	"math"
 	"../popcount"
 )
 
@@ -59,7 +58,7 @@ func (s *IntSet) Remove(x int) {
 	if word >= len(s.words) {
 		return // Nothing to do
 	}
-	s.words[word] &= (math.MaxUint64 - (1 << bit))
+	s.words[word] &= ^(1 << bit)
 }
 
 func (s *IntSet) Clear() {

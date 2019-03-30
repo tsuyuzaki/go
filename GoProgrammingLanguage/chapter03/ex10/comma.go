@@ -1,3 +1,6 @@
+/**
+ * 文字列の連結の代わりに bytes.Buffer を使って、再起呼び出しを行わない comma を作成しなさい。
+ */
 package main
 
 import (

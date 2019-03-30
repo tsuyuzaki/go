@@ -1,3 +1,6 @@
+/**
+ * できるだけコンパクトに KB, MB, ..., YB までの const 宣言を書きなさい。
+ */
 package main
 
 import (

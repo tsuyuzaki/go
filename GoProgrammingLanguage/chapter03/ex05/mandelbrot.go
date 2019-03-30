@@ -1,3 +1,6 @@
+/**
+ * image.NewRGBA 関数と color.RGBA 型あるいは color.YCbCr 型を使ってフルカラーのマンデルブロ集合を実装しなさい。
+ */
 package main
 
 import (

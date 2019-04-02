@@ -34,8 +34,8 @@ func getHrefValues(links []string, n *html.Node) []string {
 }
 
 func visit(links []string, n *html.Node) []string {
+	links = getHrefValues(links, cur)
 	for cur := n; cur != nil; cur = cur.NextSibling {
-		links = getHrefValues(links, cur)
 		links = visit(links, cur.FirstChild)
 	}
 	return links

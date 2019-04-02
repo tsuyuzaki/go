@@ -42,9 +42,9 @@ func getValues(vs []string, k string, n *html.Node) []string {
 }
 
 func visit(links []string, n *html.Node) []string {
-	for cur := n; cur != nil; cur = cur.NextSibling {
-		links = getHrefValues(links, cur)
-		links = visit(links, cur.FirstChild)
+	links = getHrefValues(links, n)
+	for cur := n.FirstChild; cur != nil; cur = cur.NextSibling {
+		links = visit(links, cur)
 	}
 	return links
 }

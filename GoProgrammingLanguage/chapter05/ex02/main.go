@@ -23,10 +23,10 @@ func main() {
 }
 
 func countElements(cnt map[string]int, n *html.Node) {
-	for cur := n; cur != nil; cur = cur.NextSibling {
-		if n.Type == html.ElementNode {
-			cnt[n.Data]++
-		}
-		countElements(cnt, cur.FirstChild)
+	if n.Type == html.ElementNode {
+		cnt[n.Data]++
+	}
+	for cur := n.FirstChild; cur != nil; cur = cur.NextSibling {
+		countElements(cnt, cur)
 	}
 }

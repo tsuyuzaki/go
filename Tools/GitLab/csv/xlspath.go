@@ -10,7 +10,7 @@ import (
 const bat = `@echo off
 if "%~1"=="" (
 	assoc .xls
-) else if not "%~1"=="" (
+) else (
 	ftype "%~1"
 )`
 const batName = "find_csv_cmd.bat"

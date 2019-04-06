@@ -7,7 +7,6 @@ import (
 	"os"
 )
 
-const kEditorPath = `C:\Program Files (x86)\Microsoft Office\Office15\EXCEL.EXE`
 const kCSVFilePath = "input.csv"
 
 const kFormData = "#ProjectURL,GroupURL1,GroupURL2,...\n#https://%[1]s/project/path,https://%[1]s/group/path1,https://%[1]s/group/path2,..."

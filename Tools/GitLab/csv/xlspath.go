@@ -51,7 +51,7 @@ func toExcelPath(s string) (string, bool) {
 		return "", false
 	}
 	s = s[index+1:]
-	index = strings.Index(s[:], `"`)
+	index = strings.Index(s, `"`)
 	if index == -1 {
 		fmt.Fprintf(os.Stderr, "Can not find Excel. cmd out[%s]\n", s)
 		return "", false

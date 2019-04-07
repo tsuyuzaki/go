@@ -3,8 +3,8 @@ package infile
 import (
 	"fmt"
 	"os"
-	"strings"
 	"os/exec"
+	"strings"
 )
 
 const bat = `@echo off
@@ -24,7 +24,7 @@ func getExcelPath() (string, bool) {
 			fmt.Fprintf(os.Stderr, "os.Remove error [%v]\n", err)
 		}
 	}()
-	
+
 	out, err := exec.Command(batName).Output()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Can not find Excel. err[%v]\n", err)
@@ -35,7 +35,7 @@ func getExcelPath() (string, bool) {
 		fmt.Fprintf(os.Stderr, "Can not find Excel\n\t $ assoc .xls\n%s\n", out)
 		return "", false
 	}
-	
+
 	out, err = exec.Command(batName, splitted[1]).Output()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Can not find Excel. err[%v]\n", err)

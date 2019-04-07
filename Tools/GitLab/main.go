@@ -1,11 +1,11 @@
 package main
 
 import (
+	"./gitlab"
+	"./infile"
+	"bufio"
 	"fmt"
 	"os"
-	"bufio"
-	"./infile"
-	"./gitlab"
 )
 
 const csvFilePath = "input.csv"
@@ -20,11 +20,11 @@ func main() {
 		!infile.ShowCSV(csvFilePath) {
 		return
 	}
-	
+
 	if !confirm() {
 		return
 	}
-	
+
 	rows, ok := infile.ReadCSV(csvFilePath)
 	if !ok {
 		return

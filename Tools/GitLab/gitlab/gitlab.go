@@ -23,6 +23,18 @@ type SharedGroup struct {
 	ExpiresAt   string `json:"expires_at"`
 }
 
+var gAccessValues map[string]int
+
+func init() {
+	gAccessValues = map[string]int{
+		"10": 10,
+		"20": 20,
+		"30": 30,
+		"40": 40,
+		"50": 50,
+	}
+}
+
 func ToStrID(path string) (string, bool) {
 	if path == "" {
 		fmt.Println("Invalid Path")
@@ -35,7 +47,12 @@ func ToStrID(path string) (string, bool) {
 	}
 }
 
-func AddGroups(token, prjURL string, gURLs []string) {
+func AddGroups(token, prjURL, strGAccess string, gURLs []string) {
+	gAccess, ok := gAccessValues[strGAccess]
+	if !ok {
+		fmt.Fprintf(os.Stderr, "Invalid group_access value. group_access must be 10, 20, 30, 40 or 50. [input is %s.]\n", strGAccess)
+		return
+	}
 	parsedPrjURL, err := url.Parse(prjURL)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "url.Parse error[%v]\n", err)
@@ -63,7 +80,7 @@ func AddGroups(token, prjURL string, gURLs []string) {
 		if !ok {
 			continue
 		}
-		if !addGroup(token, parsedPrjURL.Host, prjID, gID) {
+		if !addGroup(token, parsedPrjURL.Host, prjID, gID, gAccess) {
 			fmt.Println("ERROR:", gURL)
 		}
 	}
@@ -102,8 +119,8 @@ func getGroupID(token string, gURL *url.URL) (int, bool) {
 	return node.ID, true
 }
 
-func addGroup(token, host, prjID string, gID int) bool {
-	input := SharedGroup{ID: prjID, GroupID: gID, GroupAccess: 30, ExpiresAt: ""}
+func addGroup(token, host, prjID string, gID, gAccess int) bool {
+	input := SharedGroup{ID: prjID, GroupID: gID, GroupAccess: gAccess, ExpiresAt: ""}
 	jsonStr, err := json.Marshal(input)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "json.Marshal error[%v]\n", err)

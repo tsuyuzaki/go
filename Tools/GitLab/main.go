@@ -1,10 +1,11 @@
 package main
 
 import (
-	"./csv"
-	"./gitlab"
 	"fmt"
 	"os"
+	"bufio"
+	"./csv"
+	"./gitlab"
 )
 
 const csvFilePath = "input.csv"
@@ -20,7 +21,11 @@ func main() {
 		!csv.ShowCSV(csvFilePath) {
 		return
 	}
-
+	
+	if !confirm() {
+		return
+	}
+	
 	rows, ok := csv.ReadCSV(csvFilePath)
 	if !ok {
 		return
@@ -31,5 +36,22 @@ func main() {
 			continue
 		}
 		gitlab.AddGroups(os.Args[1], splittedRow[0], splittedRow[1], splittedRow[2:])
+	}
+}
+
+func confirm() bool {
+	for {
+		fmt.Printf("Do you want to continue to add access groups? [Y/N]: ")
+		s := bufio.NewScanner(os.Stdin)
+		if ok := s.Scan(); !ok {
+			fmt.Fprintf(os.Stderr, "Scan error\n")
+			return false
+		}
+		answer := s.Text()
+		if answer == "Y" {
+			return true
+		} else if answer == "N" {
+			return false
+		}
 	}
 }

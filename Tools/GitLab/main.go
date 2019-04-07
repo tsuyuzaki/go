@@ -16,8 +16,8 @@ func main() {
 		fmt.Println("Please input your token.")
 		return
 	}
-	if !csv.CreateFileIfNotExists(csvFilePath, fmt.Sprintf(formData, "gitlab.com")) ||
-		!csv.ShowCSV(csvFilePath) {
+	if !infile.CreateFileIfNotExists(csvFilePath, fmt.Sprintf(formData, "gitlab.com")) ||
+		!infile.ShowCSV(csvFilePath) {
 		return
 	}
 	
@@ -25,7 +25,7 @@ func main() {
 		return
 	}
 	
-	rows, ok := csv.ReadCSV(csvFilePath)
+	rows, ok := infile.ReadCSV(csvFilePath)
 	if !ok {
 		return
 	}

@@ -9,7 +9,6 @@ import (
 )
 
 const csvFilePath = "input.csv"
-
 const formData = "#ProjectURL,GroupAccess(10/20/30/40 or 50),GroupURL1,GroupURL2,...\n#https://%[1]s/project/path,30,https://%[1]s/group/path1,https://%[1]s/group/path2,..."
 
 func main() {

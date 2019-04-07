@@ -13,7 +13,7 @@ if "%~1"=="" (
 ) else (
 	ftype "%~1"
 )`
-const batName = "find_csv_cmd.bat"
+const batName = "find_xls_exe_cmd.bat"
 
 func getExcelPath() (string, bool) {
 	if !createFile(batName, bat) {

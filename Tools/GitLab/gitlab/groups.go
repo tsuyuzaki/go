@@ -73,7 +73,7 @@ func getUserID(token, host, username string) (int, bool) {
 		return 0, false
 	}
 	if len(nodes) != 1 {
-		fmt.Fprintf(os.Stderr, "Some [%s] are exists.\n", username)
+		fmt.Fprintf(os.Stderr, "Cannot identify [%s].\n", username)
 		return 0, false
 	}
 	return nodes[0].ID, true

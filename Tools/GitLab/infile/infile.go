@@ -57,7 +57,7 @@ func isExisting(csvFilePath string) bool {
 }
 
 func createFile(filePath, formData string) bool {
-	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_CREATE, 0666)
+	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "os.OpenFile err[%v]\n", err)
 		return false

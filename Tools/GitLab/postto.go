@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 )
 
-const membersCSV = "users.csv"
+const usersCSV = "users.csv"
 const addMembersFormData = "#GroupURL,GroupAccess(10/20/30/40 or 50),UserName1,UserName2,...\n#https://%[1]s/group/path,30,norihiko-tsuyuzaki,kimio-hashimoto,..."
 
 const groupsCSV = "groups.csv"
@@ -23,7 +23,7 @@ func main() {
 	}
 	var csvFilePath, formData string
 	if os.Args[1] == "g" {
-		csvFilePath = membersCSV
+		csvFilePath = usersCSV
 		formData = addMembersFormData
 	} else if os.Args[1] == "p" {
 		csvFilePath = groupsCSV

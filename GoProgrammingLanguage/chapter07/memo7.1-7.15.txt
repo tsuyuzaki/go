@@ -19,5 +19,21 @@
   }
 - *os.File や *bytes.Buffer のような具象型は、適切な Write メソッドの振る舞いを呼び出し元に提供することが求められる。
 - fmt.Fprintf は io.Writer の内部表現は意識しない。io.Writer の契約で保証される振る舞いのみに依存するため、io.Writerの実体は代替可能。★
+
+■7.2 インタフェース型
+- インタフェース型は具象型がそのインタフェースのインスタンスとして見なされるために持たなければならないメソッドの集まりの定義。
+- 既存の型の組み合わせとして新たなインタフェース型を宣言できる。構造体埋め込みに似た構文でインタフェースを**埋め込み**することができる。
+  package io
+  
+  type ReadWriteCloser interface { // 埋め込みによるインタフェース組み合わせ方法。
+      Reader
+      Writer
+      Closer
+  }
+  type ReaderWriter interface {  // 埋め込みではないインタフェース組み合わせ方法。
+      Read(p []byte) (n int, err error)
+      Write(p []byte) (n int, err error)
+  }
 - 
+
 

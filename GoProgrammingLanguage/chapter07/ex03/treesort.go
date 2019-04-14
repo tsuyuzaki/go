@@ -20,17 +20,17 @@ func main() {
 }
 
 func (t *tree) String() string {
-	return t.toStr("")
+	return t.toStr(0)
 }
 
-func (t* tree) toStr(indent string) string {
+func (t* tree) toStr(depth int) string {
 	if t == nil {
 		return ""
 	}
-	s := fmt.Sprintf("%s%d\n", indent, t.value)
-	indent += "  "
-	s += t.right.toStr(indent)
-	s += t.left.toStr(indent)
+	s := fmt.Sprintf("%*s%d\n", depth*2, "", t.value)
+	depth++
+	s += t.right.toStr(depth)
+	s += t.left.toStr(depth)
 	return s
 }
 

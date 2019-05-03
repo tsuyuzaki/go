@@ -36,6 +36,28 @@
   }
 
 ■7.3 インタフェースを満足する
+- インタフェースに対する代入可能性の規則は単純。その型がインタフェースを満足していれば代入可能。
+- インタフェースは具象型とその型が保持する値を包み隠す。具象型が他のメソッドを持っていてもそのインタフェース型が公開しているメソッドしか呼べない。
+  os.Stdout.Write([]byte("hello")) // OK: *os.File は Write メソッドあり
+  os.Stdout.Close()                // OK: *os.File は Close メソッドあり
 
+  var w io.Writer
+  w = os.Stdout
+  w.Write([]byte("hello")) // OK: io.Writer は Write メソッドあり
+  w.Close()                // コンパイルエラー: io.Writer は Close メソッドなし
+- 空インタフェース型 (interface{}) は全くメソッドを持たない。それを満足する方に何も要求していないので、全ての値を空インタフェースに代入できる。
+  var any interface{}
+  any = true
+  any = 12.34
+  any = "hello"
+  ...
+- 宣言の方法により型がインタフェースを満足することを強制することも可能。
+  var w io.Writer = new(bytes.Buffer)    // *bytes.Buffer は io.Writer を満足しなければならない
+  var _ io.Writer = (*bytes.Buffer)(nil) // *bytes.Buffer は io.Writer を満足しなければならない
+- 一つのクラスが満足するインタフェースの集まりをクラスで明示的に記述する言語と異なり、Go は具象型の宣言を修正することなく、必要な場合に新たな抽象化つまり、
+　興味ある部分の新たなグループ化を行うことができる。★
+
+■7.4 flag.Value によるフラグの解析
+- flag.Duration 関数は time.Duration 型のフラグ変数を生成し、String メソッドで表示されたものと同じ表記を含む、さまざまな使いやすい形式でユーザが期間を指定できる。
 
 

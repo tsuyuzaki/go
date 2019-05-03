@@ -8,19 +8,19 @@ import "io"
 
 type myReader struct {
 	s string
-	n int
+	cur int
 }
 
 func (r *myReader) Read(p []byte) (int, error) {
-	copiedN := copy(p, r.s[r.n:])
-	r.n += copiedN
-	if r.n < len(r.s) {
-		return copiedN, nil
+	n := copy(p, r.s[r.cur:])
+	r.cur += n
+	if r.cur < len(r.s) {
+		return n, nil
 	}
 	// All read
-	return copiedN, io.EOF
+	return n, io.EOF
 }
 
 func NewReader(s string) io.Reader {
-	return &myReader{s: s, n: 0}
+	return &myReader{s: s, cur: 0}
 }

@@ -60,4 +60,55 @@
 ■7.4 flag.Value によるフラグの解析
 - flag.Duration 関数は time.Duration 型のフラグ変数を生成し、String メソッドで表示されたものと同じ表記を含む、さまざまな使いやすい形式でユーザが期間を指定できる。
 
+■7.5 インタフェース値
+- Go では変数は常に定義された値へ初期化される。インタフェースも例外ではなく、インタフェースのゼロ値は nil。
+  var w io.Writer // w は nil。
+- 具象型からインタフェースの暗黙的な変換を伴う代入も可能。
+  w = os.Stdout // *os.File を io.Writer に変換し、代入している。
+- インタフェース値は任意の大きさの動的な値を保持することができる。
+  var x interface{} = time.Now()
+- インタフェース値は ==, != を使って比較可能(map のキーや switch のオペランドとして使える)。
+- どちらも nil か、動的な型が同一でかつ動的な値がその型に対する == の通常の振る舞いに従って等しければ二つのインタフェース値は等しい。
+- ただし、スライスなど、インタフェース値が同じ動的な方を持つが、その型が比較できない (スライスなど) 場合、比較は失敗しパニックになる。★
+- インタフェース値は比較可能であるが比較が失敗し、パニックが発生しうる点に注意。インタフェース値が比較可能な型の動的な値を含んでいると確証できるときのみ比較を利用すること。★
+
+■7.5.1 警告:nil ポインタを含むインタフェースは nil ではない。
+- 値を含まない nil インタフェース値は、たまたま nil であるポインタを含むインタフェース値と異なる。この違いは Goプログラマをつまずかせる罠を生み出す。★
+- 以下のコードで、f に渡す buf は nil だが、io.Writer としては byte.Buffer 型の、値として nil を持つインタフェースとなり、 out 自体が nil ではない。
+  そのため out.Write() が呼び出されてパニックになる。
+  var debug = false
+  func main() {
+      var buf *bytes.Buffer
+      if debug {
+          buf = new(bytes.Buffer)
+      }
+      f(buf)
+      ...
+
+  func f(out io.Writer) {
+      if out != nil {
+          out.Write([]byte("done!\n")
+      }
+- 上記の解決方法は、呼び出し元の buf を io.Writer に変更すること。
+  var buf io.Writer
+  if debug {
+      buf = new(bytes.Buffer)
+  }
+  f(buf) // OK
+
+■7.6 sort.Interface でのソート
+- sort は多くのプログラムで頻繁に使われる操作で、sort パッケージはどのような列に対しても任意の順序付け関数に従った列内でのソートを提供する。
+- Go の sort.Sort 関数は、列やその要素の表現についてはなにも想定しない。代りに汎用ソートアルゴリズムとソートできる個々の列型との間の契約を定めるインタフェースを使う。
+  package sort
+  type Interface interface {
+      Len() int
+      Less(i, j int) bool // i, j は列要素のインデックス
+      Swap(i, j int)
+  }
+- 利便性のため sort パッケージは []int, []string, []float64 に特化していて、それらの自然な順序付けを行う関数と方も提供している。
+
+
+
+
+
 

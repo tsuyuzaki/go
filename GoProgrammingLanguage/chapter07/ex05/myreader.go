@@ -15,6 +15,10 @@ type myReader struct {
 }
 
 func (r *myReader) Read(p []byte) (n int, err error) {
+	if r.n <= 0 {
+		return 0, io.EOF
+	}
+
 	if int64(len(p)) > r.n {
 		bs := make([]byte, r.n)
 		n, err = r.r.Read(bs)

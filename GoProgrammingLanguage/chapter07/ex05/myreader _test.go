@@ -55,4 +55,16 @@ func TestReader(t *testing.T) {
 	if err != io.EOF || n != maxSize {
 		t.Errorf("maxSize=%d, len(p)=%d, error=%v, n=%d\n", maxSize, len(p), err, n)
 	}
+
+	tr = NewTestReader(maxSize)
+	r = LimitReader(tr, 0)
+	if err != io.EOF || n != 0 {
+		t.Errorf("maxSize=%d, len(p)=%d, error=%v, n=%d\n", maxSize, len(p), err, n)
+	}
+
+	tr = NewTestReader(maxSize)
+	r = LimitReader(tr, -1)
+	if err != io.EOF || n != 0 {
+		t.Errorf("maxSize=%d, len(p)=%d, error=%v, n=%d\n", maxSize, len(p), err, n)
+	}
 }

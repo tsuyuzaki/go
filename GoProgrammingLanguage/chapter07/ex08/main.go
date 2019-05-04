@@ -3,6 +3,8 @@
  * 一次ソートキーは最も直近にクリックされた列の見出し、二次ソートキーは二番目に近くクリックされた列の見出しといった具合になります。
  * このような表が使う sort.Interface の実装を定義しなさい。
  * その実装を sort.Stable を使う繰り返しソートと比較しなさい。
+ *
+ * > go test -bench . -benchmem sort_test.go
  */
 package main
 

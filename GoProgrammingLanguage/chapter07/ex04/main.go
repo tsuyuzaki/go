@@ -8,34 +8,18 @@ import (
 	"os"
 	"fmt"
 	"strings"
-	"bufio"
+	"io/ioutil"
 	"golang.org/x/net/html"
 	"./myreader"
 )
 
-func readInFile() (string, bool) {
-	f, err := os.Open("input.html")
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "os.Open error [%v]\n", err)
-		return "", false
-	}
-	defer f.Close()
-	
-	s := bufio.NewScanner(f)
-	var ret string
-	for s.Scan() {
-		ret += s.Text()
-	}
-	return ret, true
-}
-
 func main() {
-	s, ok := readInFile()
-	if !ok {
-		fmt.Fprintf(os.Stderr, "readInFile error \n")
+	bs, err := ioutil.ReadFile("input.html")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "ioutil.ReadFile error [%v]\n", err)
 		return
 	}
-	r := myreader.NewReader(s)
+	r := myreader.NewReader(string(bs))
 	doc, err := html.Parse(r)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "html.Parse error [%v]\n", err)

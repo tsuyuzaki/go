@@ -25,9 +25,6 @@ var tracks = []*mytrack.Track{
 
 func getSortKey(r *http.Request) (string, bool) {
 	query := r.URL.Query()
-	if query == nil {
-		return "", false
-	}
 	value, ok := query["sortkey"]
 	if !ok {
 		return "", false

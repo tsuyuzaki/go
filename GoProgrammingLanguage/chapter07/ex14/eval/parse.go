@@ -17,6 +17,7 @@ type lexer struct {
 
 func (lex *lexer) next()        { lex.token = lex.scan.Scan() }
 func (lex *lexer) text() string { return lex.scan.TokenText() }
+func (lex *lexer) peek() rune   { return lex.scan.Peek() }
 
 type lexPanic string
 
@@ -50,6 +51,7 @@ func precedence(op rune) int {
 //   expr = num                         a literal number, e.g., 3.14159
 //        | id                          a variable name, e.g., x
 //        | id '(' expr ',' ... ')'     a function call
+//        | id "++" or "--"             a postfix operator (++ or --)
 //        | '-' expr                    a unary operator (+-)
 //        | expr '+' expr               a binary operator (+-*/)
 //
@@ -106,6 +108,7 @@ func parseUnary(lex *lexer) Expr {
 
 // primary = id
 //         | id '(' expr ',' ... ',' expr ')'
+//         | id "++" or "--"
 //         | num
 //         | '(' expr ')'
 func parsePrimary(lex *lexer) Expr {
@@ -114,7 +117,18 @@ func parsePrimary(lex *lexer) Expr {
 		id := lex.text()
 		lex.next() // consume Ident
 		if lex.token != '(' {
-			return Var(id)
+			expr := Var(id)
+			if lex.token == '+' && lex.peek() == '+' {
+				lex.next()
+				lex.next()
+				return postfix{expr, "++"}
+			} else if lex.token == '-' && lex.peek() == '-' {
+				lex.next()
+				lex.next()
+				return postfix{expr, "--"}
+			} else {
+				return expr
+			}
 		}
 		lex.next() // consume '('
 		var args []Expr

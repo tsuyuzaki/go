@@ -10,7 +10,6 @@ import (
 	"os"
 	"log"
 	"sort"
-	"io/ioutil"
 	"./mytrack"
 	"html/template"
 	"net/http"
@@ -36,12 +35,7 @@ func getSortKey(r *http.Request) (string, bool) {
 }
 
 func main() {
-	page, err := ioutil.ReadFile("./html/index.html")
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "ioutil.ReadFile error [%v]\n", err)
-		return
-	}
-	table := template.Must(template.New("table").Parse(string(page)))
+	table := template.Must(template.ParseFiles("./html/index.html"))
 	tracks := mytrack.NewTracks(tracks)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

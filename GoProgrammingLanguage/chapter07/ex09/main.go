@@ -15,14 +15,11 @@ import (
 	"net/http"
 )
 
-func setSortKeyToCookie(w http.ResponseWriter, key string) {
-	cookie := &http.Cookie{Name: "sortkey", Value: key}
-	http.SetCookie(w, cookie)
-}
+const sortKeyName = "sortKey"
 
 func getSortKeyFromURL(r *http.Request) (string, bool) {
 	query := r.URL.Query()
-	value, ok := query["sortkey"]
+	value, ok := query[sortKeyName]
 	if !ok {
 		return "", false
 	}
@@ -35,15 +32,20 @@ func getSortKeyFromURL(r *http.Request) (string, bool) {
 func getSortKeys(r *http.Request) []string {
 	key, ok := getSortKeyFromURL(r)
 	if !ok {
-		return []string{}
+		return []string{} // For default order
 	}
 	var keys []string
 	keys = append(keys, key)
-	cookie, err := r.Cookie("sortkey")
+	cookie, err := r.Cookie(sortKeyName)
 	if err == nil && cookie.Value != "" {
 		keys = append(keys, cookie.Value)
 	}
 	return keys
+}
+
+func setSortKeyToCookie(w http.ResponseWriter, key string) {
+	cookie := &http.Cookie{Name: sortKeyName, Value: key}
+	http.SetCookie(w, cookie)
 }
 
 func main() {
@@ -54,7 +56,7 @@ func main() {
 		if len(keys) != 0 {
 			setSortKeyToCookie(w, keys[0])
 		} else {
-			setSortKeyToCookie(w, "")
+			setSortKeyToCookie(w, "") // Clear cookie
 		}
 		tracks := []*mytrack.Track{
 			{"Go", "Delilah", "From the Roots Up", 2012, mytrack.Length("3m38s")},

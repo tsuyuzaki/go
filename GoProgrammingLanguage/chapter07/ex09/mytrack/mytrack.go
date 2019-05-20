@@ -1,14 +1,6 @@
-/**
- * 多くの GUI は、状態を持つ多段ソートの表ウィジェットを提供しています。
- * 一次ソートキーは最も直近にクリックされた列の見出し、二次ソートキーは二番目に近くクリックされた列の見出しといった具合になります。
- * このような表が使う sort.Interface の実装を定義しなさい。
- * その実装を sort.Stable を使う繰り返しソートと比較しなさい。
- */
 package mytrack
 
 import (
-	"os"
-	"fmt"
 	"time"
 )
 
@@ -22,24 +14,11 @@ type Track struct {
 
 type TracksToBeSorted struct {
 	Tracks []*Track
-	primaryKey string
-	secondlyKey string
+	sortKeys []string
 }
 
-func NewTracks(tracks []*Track) *TracksToBeSorted {
-	return &TracksToBeSorted{Tracks: tracks, primaryKey: "Title", secondlyKey: "Artist"}
-}
-
-func (ts *TracksToBeSorted) SetSortKey(key string) {
-	if key != "Title" && key != "Artist" && key != "Album" && key != "Year" && key != "Length" {
-		fmt.Fprintf(os.Stderr, "SetKey error [Invalid key %s]\n", key)
-		key = "Title"
-	}
-	if key == ts.primaryKey {
-		return
-	}
-	ts.secondlyKey = ts.primaryKey
-	ts.primaryKey = key
+func NewTracks(tracks []*Track, keys []string) *TracksToBeSorted {
+	return &TracksToBeSorted{Tracks: tracks, sortKeys: keys}
 }
 
 func (ts *TracksToBeSorted) Len() int {
@@ -47,13 +26,14 @@ func (ts *TracksToBeSorted) Len() int {
 }
 
 func (ts *TracksToBeSorted) Less(i, j int) bool {
-	result := ts.compare(i, j, ts.primaryKey)
-	if result != 0 {
-		return (result < 0)
-	}
-	result = ts.compare(i, j, ts.secondlyKey)
-	if result != 0 {
-		return (result < 0)
+	for _, key := range ts.sortKeys {
+		if key == "" {
+			key = "Title"
+		}
+		result := ts.compare(i, j, key)
+		if result != 0 {
+			return (result < 0)
+		}
 	}
 	return (i < j)
 }

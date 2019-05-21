@@ -14,16 +14,7 @@ type Track struct {
 	Length time.Duration
 }
 
-var validSortKeys = []string{"Title", "Artist", "Album", "Year", "Length"}
-
-func isValidSortKey(key string) bool {
-	for _, sortKey := range validSortKeys {
-		if key == sortKey {
-			return true
-		}
-	}
-	return false
-}
+var validSortKeys = map[string]bool{"Title":true, "Artist":true, "Album":true, "Year":true, "Length":true}
 
 type TracksToBeSorted struct {
 	Tracks []*Track
@@ -33,12 +24,12 @@ type TracksToBeSorted struct {
 func NewTracks(tracks []*Track, keys []string) *TracksToBeSorted {
 	var sortKeys []string
 	for _, key := range keys { // key validation
-		if isValidSortKey(key) {
+		if _, ok := validSortKeys[key]; ok {
 			sortKeys = append(sortKeys, key)
 		}
 	}
 	if len(sortKeys) == 0 { // For default order
-		sortKeys = append(sortKeys, validSortKeys[0])
+		sortKeys = append(sortKeys, "Title")
 	}
 	return &TracksToBeSorted{Tracks: tracks, sortKeys: sortKeys}
 }
@@ -110,7 +101,6 @@ func (ts *TracksToBeSorted) compare(i, j int, key string) int {
 		return (i - j)
 	}
 }
-
 
 func Length(s string) time.Duration {
 	d, err := time.ParseDuration(s)

@@ -15,25 +15,20 @@ import (
 
 func getExprAndEnv(r *http.Request) (string, string, bool) {
 	query := r.URL.Query()
-	value, ok := query["expr"]
-	if !ok {
-		return "", "", false
-	}
-	if len(value) != 1 {
-		return "", "", false
-	}
-	expr := value[0]
-	
-	// env is optional.
-	value, ok = query["env"]
-	if !ok {
-		return expr, "", true
-	}
-	if len(value) != 1 {
-		return expr, "", true
+	value, ok := query["env"]
+	var env string
+	if ok && len(value) == 1 { // env is optional.
+		env = value[0]
 	}
 	
-	return expr, value[0], true
+	value, ok = query["expr"]
+	if !ok {
+		return "", env, false
+	}
+	if len(value) != 1 {
+		return "", env, false
+	}
+	return value[0], env, true
 }
 
 func calcHandler(w http.ResponseWriter, r *http.Request) {

@@ -49,16 +49,14 @@ func calcHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	env := make(eval.Env)
 	if strenv != "" {
-		err = json.Unmarshal([]byte(strenv), &env)
-		if err != nil {
+		if err = json.Unmarshal([]byte(strenv), &env); err != nil {
 			fmt.Fprintf(w, "Invalid env expression. err[%v]\n", err)
 			return
 		}
 	}
 
 	vars := make(map[eval.Var]bool)
-	err = expr.Check(vars)
-	if err != nil {
+	if err = expr.Check(vars); err != nil {
 		fmt.Fprintf(w, "expr check() error. [%v]\n", err)
 		return
 	}

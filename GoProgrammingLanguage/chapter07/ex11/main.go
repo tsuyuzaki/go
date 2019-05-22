@@ -102,25 +102,18 @@ func (db database) doList(w http.ResponseWriter) {
 }
 
 func getItem(w http.ResponseWriter, req *http.Request) (string, bool) {
-	q := req.URL.Query()
-	v, ok := q["item"]
-	if !ok || len(v) != 1 || v[0] == "" {
+	item := req.URL.Query().Get("item")
+	result := (item != "")
+	if !result {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Can not identify a item. query[%s]\n", req.URL.RawQuery)
-		return "", false
 	}
-	return v[0], true
+	return item, result
 }
 
 func getPrice(w http.ResponseWriter, req *http.Request) (dollars, bool) {
-	q := req.URL.Query()
-	v, ok := q["price"]
-	if !ok || len(v) != 1 {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "Can not identify a price. query[%s]\n", req.URL.RawQuery)
-		return 0, false
-	}
-	f, err := strconv.ParseFloat(v[0], 32)
+	price := req.URL.Query().Get("price")
+	f, err := strconv.ParseFloat(price, 32)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Price parse error:[%v] query[%s]\n", err, req.URL.RawQuery)

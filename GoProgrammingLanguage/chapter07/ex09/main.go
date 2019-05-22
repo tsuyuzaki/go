@@ -17,21 +17,9 @@ import (
 
 const sortKeyName = "sortKey"
 
-func getSortKeyFromURL(r *http.Request) (string, bool) {
-	query := r.URL.Query()
-	value, ok := query[sortKeyName]
-	if !ok {
-		return "", false
-	}
-	if len(value) != 1 {
-		return "", false
-	}
-	return value[0], true
-}
-
 func getSortKeys(r *http.Request) []string {
-	key, ok := getSortKeyFromURL(r)
-	if !ok {
+	key := r.URL.Query().Get(sortKeyName)
+	if key == "" {
 		return []string{} // For default order
 	}
 	var keys []string

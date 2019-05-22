@@ -13,47 +13,32 @@ import (
 	"os"
 )
 
-func getExprAndEnv(r *http.Request) (string, string, bool) {
-	query := r.URL.Query()
-	value, ok := query["env"]
-	var env string
-	if ok && len(value) == 1 { // env is optional.
-		env = value[0]
-	}
-
-	value, ok = query["expr"]
-	if !ok {
-		return "", env, false
-	}
-	if len(value) != 1 {
-		return "", env, false
-	}
-	return value[0], env, true
-}
-
 func calcHandler(w http.ResponseWriter, r *http.Request) {
-	strexpr, strenv, ok := getExprAndEnv(r)
-	if !ok {
+	q := r.URL.Query()
+	strExpr := q.Get("expr")
+	if strExpr == "" {
 		fmt.Fprintf(w, "Please enter the formula in the URL\nEx: http://localhost:8000/?expr=a*b&env={\"a\":2,\"b\":4} (Ex means 2 * 4.)")
 		return
 	}
-	expr, err := eval.Parse(strexpr)
+	expr, err := eval.Parse(strExpr)
 	if err != nil {
-		fmt.Fprintf(w, "Invalid expr(%s). [%v]\n", strexpr, err)
+		fmt.Fprintf(w, "Invalid expr(%s). [%v]\n", strExpr, err)
 		return
-	}
-	env := make(eval.Env)
-	if strenv != "" {
-		if err = json.Unmarshal([]byte(strenv), &env); err != nil {
-			fmt.Fprintf(w, "Invalid env expression. err[%v]\n", err)
-			return
-		}
 	}
 
 	vars := make(map[eval.Var]bool)
 	if err = expr.Check(vars); err != nil {
 		fmt.Fprintf(w, "expr check() error. [%v]\n", err)
 		return
+	}
+
+	env := make(eval.Env)
+	strEnv := q.Get("env")
+	if strEnv != "" { // env is optional.
+		if err = json.Unmarshal([]byte(strEnv), &env); err != nil {
+			fmt.Fprintf(w, "Invalid env expression. err[%v]\n", err)
+			return
+		}
 	}
 
 	result := expr.Eval(env)

@@ -63,14 +63,14 @@ func Test6_1(t *testing.T) {
 			t.Errorf("failed test")
 		}
 	}
-	
+
 	if s.Len() != 0 {
 		t.Errorf("failed test")
 	}
 	if s.String() != s.Copy().String() {
 		t.Errorf("failed test")
 	}
-	
+
 	for i := 0; i < maxLen; i++ {
 		if !addTest(&s, i) {
 			t.Errorf("failed test")
@@ -101,13 +101,12 @@ func Test6_2(t *testing.T) {
 	}
 }
 
-
 func testIntersectWith(t *testing.T) {
-	testdata := []struct{
+	testdata := []struct {
 		in1      []int
 		in2      []int
 		expected []int
-	} {
+	}{
 		{
 			[]int{0, 1, 10},
 			[]int{0, 2, 10},
@@ -131,7 +130,7 @@ func testIntersectWith(t *testing.T) {
 
 		passed := IntSet{}
 		passed.AddAll(td.in2...)
-		
+
 		s.IntersectWith(&passed)
 		for _, e := range td.expected {
 			if !s.Has(e) {
@@ -142,11 +141,11 @@ func testIntersectWith(t *testing.T) {
 }
 
 func testDifferenceWith(t *testing.T) {
-	testdata := []struct{
+	testdata := []struct {
 		in1      []int
 		in2      []int
 		expected []int
-	} {
+	}{
 		{
 			[]int{0, 1, 10},
 			[]int{0, 2, 10},
@@ -170,7 +169,7 @@ func testDifferenceWith(t *testing.T) {
 
 		passed := IntSet{}
 		passed.AddAll(td.in2...)
-		
+
 		s.DifferenceWith(&passed)
 		for _, e := range td.expected {
 			if !s.Has(e) {
@@ -181,11 +180,11 @@ func testDifferenceWith(t *testing.T) {
 }
 
 func testSymmetricDifference(t *testing.T) {
-	testdata := []struct{
+	testdata := []struct {
 		in1      []int
 		in2      []int
 		expected []int
-	} {
+	}{
 		{
 			[]int{0, 1, 10},
 			[]int{0, 2, 10},
@@ -209,7 +208,7 @@ func testSymmetricDifference(t *testing.T) {
 
 		passed := IntSet{}
 		passed.AddAll(td.in2...)
-		
+
 		s.SymmetricDifference(&passed)
 		for _, e := range td.expected {
 			if !s.Has(e) {

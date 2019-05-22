@@ -1,8 +1,8 @@
-﻿package tempconv
+package tempconv
 
 import (
-	"fmt"
 	"flag"
+	"fmt"
 )
 
 func KelvinFlag(name string, value Kelvin, usage string) *Kelvin {

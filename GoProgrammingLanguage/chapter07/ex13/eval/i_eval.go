@@ -7,4 +7,3 @@ type Expr interface {
 }
 
 type Env map[Var]float64
-

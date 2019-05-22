@@ -6,13 +6,13 @@
 package main
 
 import (
-	"fmt"
-	"os"
-	"log"
-	"sort"
 	"./mytrack"
+	"fmt"
 	"html/template"
+	"log"
 	"net/http"
+	"os"
+	"sort"
 )
 
 const sortKeyName = "sortKey"

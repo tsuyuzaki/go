@@ -56,12 +56,12 @@ func topoSort(m map[string][]string) {
 		}
 		return children
 	}
-	
+
 	var keys []string
 	for key := range m {
 		keys = append(keys, key)
 	}
 	sort.Strings(keys)
-	
+
 	breadthFirst(f, keys)
 }

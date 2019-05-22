@@ -63,14 +63,14 @@ func Test6_1(t *testing.T) {
 			t.Fatal("failed test")
 		}
 	}
-	
+
 	if s.Len() != 0 {
 		t.Fatal("failed test")
 	}
 	if s.String() != s.Copy().String() {
 		t.Fatal("failed test")
 	}
-	
+
 	for i := 0; i < maxLen; i++ {
 		if !addTest(&s, i) {
 			t.Fatal("failed test")

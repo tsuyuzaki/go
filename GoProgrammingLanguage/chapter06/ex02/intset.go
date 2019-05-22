@@ -4,18 +4,17 @@
 package intset
 
 import (
+	"../popcount"
 	"bytes"
 	"fmt"
-	"../popcount"
 )
-
 
 type IntSet struct {
 	words []uint64
 }
 
 func (s *IntSet) Len() int {
-    len := 0
+	len := 0
 	for _, word := range s.words {
 		len += popcount.PopCount(word)
 	}
@@ -55,7 +54,6 @@ func (s *IntSet) Copy() *IntSet {
 	return &copied
 }
 
-
 func (s *IntSet) UnionWith(t *IntSet) {
 	for i, tword := range t.words {
 		if i < len(s.words) {
@@ -85,7 +83,6 @@ func (s *IntSet) String() string {
 	buf.WriteByte('}')
 	return buf.String()
 }
-
 
 func (s *IntSet) add(x int) {
 	word, bit := x/64, uint(x%64)

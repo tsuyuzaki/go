@@ -4,13 +4,13 @@
 package main
 
 import (
-	"os"
-	"fmt"
-	"log"
-	"html/template"
-	"net/http"
-	"encoding/json"
 	"./eval"
+	"encoding/json"
+	"fmt"
+	"html/template"
+	"log"
+	"net/http"
+	"os"
 )
 
 func getExprAndEnv(r *http.Request) (string, string, bool) {
@@ -20,7 +20,7 @@ func getExprAndEnv(r *http.Request) (string, string, bool) {
 	if ok && len(value) == 1 { // env is optional.
 		env = value[0]
 	}
-	
+
 	value, ok = query["expr"]
 	if !ok {
 		return "", env, false
@@ -55,7 +55,7 @@ func calcHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "expr check() error. [%v]\n", err)
 		return
 	}
-	
+
 	result := expr.Eval(env)
 	tpl := template.Must(template.ParseFiles("./template/index.html.tpl"))
 	if err := tpl.Execute(w, result); err != nil {

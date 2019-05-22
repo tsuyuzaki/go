@@ -2,9 +2,9 @@
  * HTML ノードツリーと 0 個以上の名前が与えられたら、
  * それらの名前の一つと一致する要素をすべて返す可変個引数関数 ElementsByTagName を書きなさい。
  * 二つの呼び出し例を次に示します。
- * 
+ *
  * func ElementsByTagName(doc *html.Node, name ...string) []*html.Node
- * 
+ *
  * images := ElementsByTagName(doc, "img")
  * headings := ElementsByTagName(doc, "h1", "h2", "h3", "h4")
  */
@@ -23,7 +23,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "getHTMLDoc() error [%v]\n", err)
 		return
 	}
-	
+
 	nodes := ElementsByTagName(doc, "a", "div", "span")
 	for _, node := range nodes {
 		fmt.Println(node)
@@ -42,7 +42,7 @@ func getHTMLDoc(url string) (*html.Node, error) {
 
 func ElementsByTagName(n *html.Node, name ...string) []*html.Node {
 	var nodes []*html.Node
-	
+
 	var forEachNode func(n *html.Node, name ...string)
 	forEachNode = func(n *html.Node, name ...string) {
 		if n.Type == html.ElementNode && contains(n.Data, name...) {

@@ -7,9 +7,9 @@
 package intset
 
 import (
+	"../popcount"
 	"bytes"
 	"fmt"
-	"../popcount"
 )
 
 const bitSize = 32 << (^uint(0) >> 63)
@@ -19,7 +19,7 @@ type IntSet struct {
 }
 
 func (s *IntSet) Len() int {
-    len := 0
+	len := 0
 	for _, word := range s.words {
 		len += popcount.PopCount(uint64(word))
 	}

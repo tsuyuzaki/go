@@ -12,7 +12,7 @@ import (
 
 func IsPalindrome(s sort.Interface) bool {
 	l := s.Len()
-	halfL := l/2
+	halfL := l / 2
 	for i, j := 0, l-1; i < halfL; i++ {
 		if s.Less(i, j) || s.Less(j, i) {
 			return false
@@ -23,7 +23,7 @@ func IsPalindrome(s sort.Interface) bool {
 }
 
 func main() {
-	fmt.Println(IsPalindrome(sort.IntSlice([]int{1,2,3,2,1})))
-	fmt.Println(IsPalindrome(sort.IntSlice([]int{1,2,3,3,2,1})))
-	fmt.Println(IsPalindrome(sort.IntSlice([]int{1,2,3,4,2,1})))
+	fmt.Println(IsPalindrome(sort.IntSlice([]int{1, 2, 3, 2, 1})))
+	fmt.Println(IsPalindrome(sort.IntSlice([]int{1, 2, 3, 3, 2, 1})))
+	fmt.Println(IsPalindrome(sort.IntSlice([]int{1, 2, 3, 4, 2, 1})))
 }

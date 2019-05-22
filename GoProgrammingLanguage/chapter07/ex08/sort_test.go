@@ -1,9 +1,9 @@
 package main
 
 import (
+	"./mytrack"
 	"sort"
 	"testing"
-	"./mytrack"
 )
 
 var tracks = []*mytrack.Track{

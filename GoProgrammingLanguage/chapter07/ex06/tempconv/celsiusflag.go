@@ -1,8 +1,8 @@
-﻿package tempconv
+package tempconv
 
 import (
-	"fmt"
 	"flag"
+	"fmt"
 )
 
 func CelsiusFlag(name string, value Celsius, usage string) *Celsius {

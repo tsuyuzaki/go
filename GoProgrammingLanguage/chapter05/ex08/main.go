@@ -42,7 +42,7 @@ func ElementByID(doc *html.Node, id string) (*html.Node, bool) {
 
 func forEachNode(n *html.Node, id string, pre, post func(n *html.Node, id string) bool) (*html.Node, bool) {
 	if pre != nil {
-		if ! pre(n, id) {
+		if !pre(n, id) {
 			return n, true
 		}
 	}
@@ -55,7 +55,7 @@ func forEachNode(n *html.Node, id string, pre, post func(n *html.Node, id string
 	}
 
 	if post != nil {
-		if ! post(n, id) {
+		if !post(n, id) {
 			return n, true
 		}
 	}

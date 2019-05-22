@@ -6,9 +6,9 @@ package main
 
 import (
 	"fmt"
+	"golang.org/x/net/html"
 	"net/http"
 	"os"
-	"golang.org/x/net/html"
 )
 
 func main() {
@@ -28,7 +28,7 @@ func outline(url string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	var depth int
 	startElement := func(n *html.Node) {
 		if n.Type == html.ElementNode {
@@ -36,14 +36,14 @@ func outline(url string) error {
 			depth++
 		}
 	}
-	
+
 	endElement := func(n *html.Node) {
 		if n.Type == html.ElementNode {
 			depth--
 			fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
 		}
 	}
-	
+
 	forEachNode(doc, startElement, endElement)
 
 	return nil
@@ -62,4 +62,3 @@ func forEachNode(n *html.Node, pre, post func(n *html.Node)) {
 		post(n)
 	}
 }
-

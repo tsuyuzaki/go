@@ -6,7 +6,7 @@ import (
 )
 
 type testReader struct {
-	s string
+	s   string
 	cur int
 }
 
@@ -32,7 +32,7 @@ func TestReader(t *testing.T) {
 
 	tr := NewTestReader(maxSize)
 	r := LimitReader(tr, maxSize)
-	
+
 	p := make([]byte, maxSize-1)
 	n, err := r.Read(p)
 	if err != nil || n != len(p) {

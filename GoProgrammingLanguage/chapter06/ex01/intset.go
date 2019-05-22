@@ -1,6 +1,6 @@
 /**
  * これらの追加メソッドを実装しなさい。
- * 
+ *
  * func (*IntSet) Len() int      // 要素数を返します
  * func (*IntSet) Remove(x int)  // セットから x を取り除きます
  * func (*IntSet) Clear()        // セットからすべての要素を取り除きます
@@ -9,9 +9,9 @@
 package intset
 
 import (
+	"../popcount"
 	"bytes"
 	"fmt"
-	"../popcount"
 )
 
 type IntSet struct {
@@ -19,7 +19,7 @@ type IntSet struct {
 }
 
 func (s *IntSet) Len() int {
-    len := 0
+	len := 0
 	for _, word := range s.words {
 		len += popcount.PopCount(word)
 	}
@@ -57,7 +57,6 @@ func (s *IntSet) Copy() *IntSet {
 	return &copied
 }
 
-
 func (s *IntSet) UnionWith(t *IntSet) {
 	for i, tword := range t.words {
 		if i < len(s.words) {
@@ -87,4 +86,3 @@ func (s *IntSet) String() string {
 	buf.WriteByte('}')
 	return buf.String()
 }
-

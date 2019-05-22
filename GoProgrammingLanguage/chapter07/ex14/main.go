@@ -5,10 +5,10 @@
 package main
 
 import (
-	"os"
+	"./eval"
 	"fmt"
 	"math"
-	"./eval"
+	"os"
 )
 
 func main() {
@@ -25,7 +25,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "eval.Parse() error. [%v]\n", err)
 		return
 	}
-	
+
 	env := eval.Env{"A": 87616, "pi": math.Pi}
 	fmt.Printf("%f, %f", expr.Eval(env), reExpr.Eval(env))
 }

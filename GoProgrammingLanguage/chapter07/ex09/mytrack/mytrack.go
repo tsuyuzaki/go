@@ -1,8 +1,8 @@
 package mytrack
 
 import (
-	"os"
 	"fmt"
+	"os"
 	"time"
 )
 
@@ -14,10 +14,10 @@ type Track struct {
 	Length time.Duration
 }
 
-var validSortKeys = map[string]bool{"Title":true, "Artist":true, "Album":true, "Year":true, "Length":true}
+var validSortKeys = map[string]bool{"Title": true, "Artist": true, "Album": true, "Year": true, "Length": true}
 
 type TracksToBeSorted struct {
-	Tracks []*Track
+	Tracks   []*Track
 	sortKeys []string
 }
 

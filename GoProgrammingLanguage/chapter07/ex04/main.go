@@ -5,12 +5,12 @@
 package main
 
 import (
-	"os"
-	"fmt"
-	"strings"
-	"io/ioutil"
-	"golang.org/x/net/html"
 	"./myreader"
+	"fmt"
+	"golang.org/x/net/html"
+	"io/ioutil"
+	"os"
+	"strings"
 )
 
 func main() {

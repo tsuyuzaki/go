@@ -7,11 +7,11 @@
 package main
 
 import (
+	"./links"
 	"fmt"
 	"log"
-	"os"
 	"net/url"
-	"./links"
+	"os"
 )
 
 func getOrigHosts(worklist []string) (map[string]bool, error) {

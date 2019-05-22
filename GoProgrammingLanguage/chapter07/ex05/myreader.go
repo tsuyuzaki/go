@@ -27,7 +27,7 @@ func (r *myReader) Read(p []byte) (n int, err error) {
 		n, err = r.r.Read(p)
 	}
 	r.n -= int64(n)
-	if err == nil && r.n <= 0{
+	if err == nil && r.n <= 0 {
 		err = io.EOF
 	}
 	return n, err

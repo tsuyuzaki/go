@@ -7,7 +7,7 @@ package myreader
 import "io"
 
 type myReader struct {
-	s string
+	s   string
 	cur int
 }
 

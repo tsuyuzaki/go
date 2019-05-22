@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 振る舞いを変えることなく、書き込み可能なファイルを閉じるために defer を使うよう fetch を書き直しなさい。
  */
 package main
@@ -31,7 +31,7 @@ func fetch(url string) (string, error) {
 		return "", err
 	}
 	defer resp.Body.Close()
-	
+
 	dirpath := "./result" + resp.Request.URL.Path
 	if err := os.MkdirAll(dirpath, 0777); err != nil {
 		fmt.Fprintf(os.Stderr, "os.MkdirAll(%s) error [%v]\n", dirpath, err)
@@ -55,6 +55,6 @@ func fetch(url string) (string, error) {
 			fmt.Fprintf(os.Stderr, "Close() error [%s]\n", err)
 		}
 	}()
-	
+
 	return path, err
 }

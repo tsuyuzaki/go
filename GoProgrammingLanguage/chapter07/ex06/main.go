@@ -4,9 +4,9 @@
 package main
 
 import (
-	"fmt"
-	"flag"
 	"./tempconv"
+	"flag"
+	"fmt"
 )
 
 var temp = tempconv.KelvinFlag("temp", 20.0, "the temperature")

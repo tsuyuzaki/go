@@ -4,18 +4,17 @@
 package intset
 
 import (
+	"../popcount"
 	"bytes"
 	"fmt"
-	"../popcount"
 )
-
 
 type IntSet struct {
 	words []uint64
 }
 
 func (s *IntSet) Len() int {
-    len := 0
+	len := 0
 	for _, word := range s.words {
 		len += popcount.PopCount(word)
 	}

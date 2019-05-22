@@ -38,14 +38,14 @@ func min(vals ...int) (int, bool) {
 func test(vals []int) {
 	fmt.Println(vals)
 	max, ok := max(vals...)
-	if ! ok {
+	if !ok {
 		fmt.Println("Error has occurred.")
 	} else {
 		fmt.Println("Max:", max)
 	}
 
 	min, ok := min(vals...)
-	if ! ok {
+	if !ok {
 		fmt.Println("Error has occurred.")
 	} else {
 		fmt.Println("Min:", min)
@@ -54,8 +54,8 @@ func test(vals []int) {
 
 func main() {
 	test([]int{})
-	test([]int{1,2})
-	test([]int{-1,5,6})
-	test([]int{2,4,6})
-	test([]int{-2,-6})
+	test([]int{1, 2})
+	test([]int{-1, 5, 6})
+	test([]int{2, 4, 6})
+	test([]int{-2, -6})
 }

@@ -5,10 +5,10 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"strconv"
-	"net/http"
 	"html/template"
+	"log"
+	"net/http"
+	"strconv"
 )
 
 func main() {
@@ -126,7 +126,7 @@ func (db database) doList(w http.ResponseWriter) {
 func getItem(w http.ResponseWriter, req *http.Request) (string, bool) {
 	q := req.URL.Query()
 	v, ok := q["item"]
-	if !ok || len(v) != 1 || v[0] == ""{
+	if !ok || len(v) != 1 || v[0] == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Can not identify a item. query[%s]\n", req.URL.RawQuery)
 		return "", false

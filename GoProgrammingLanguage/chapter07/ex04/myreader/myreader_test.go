@@ -1,8 +1,8 @@
 package myreader
 
 import (
-	"io"
 	"bytes"
+	"io"
 	"testing"
 )
 
@@ -21,7 +21,7 @@ func TestReader(t *testing.T) {
 			t.Errorf("p=%s, n=%d, err=%v", string(p), n, err)
 		}
 	}
-	
+
 	{
 		r := NewReader(s)
 		p := make([]byte, len(s))
@@ -30,7 +30,7 @@ func TestReader(t *testing.T) {
 			t.Errorf("p=%s, n=%d, err=%v", string(p), n, err)
 		}
 	}
-	
+
 	{
 		r := NewReader(s)
 		p := make([]byte, len(s)+1)
@@ -39,5 +39,5 @@ func TestReader(t *testing.T) {
 			t.Errorf("p=%s, n=%d, err=%v", string(p), n, err)
 		}
 	}
-	
+
 }

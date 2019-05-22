@@ -6,11 +6,11 @@
 package main
 
 import (
-	"os"
-	"fmt"
-	"bufio"
-	"strconv"
 	"./eval"
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
 )
 
 func scan(scanner *bufio.Scanner) string {
@@ -36,7 +36,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "expr.Check() error. [%v]\n", err)
 		return
 	}
-	
+
 	env := make(eval.Env)
 	for v, _ := range vars {
 		fmt.Printf("Please input value of [%s]:", string(v))

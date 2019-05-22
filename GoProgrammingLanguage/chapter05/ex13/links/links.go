@@ -1,13 +1,13 @@
 package links
 
 import (
-	"os"
 	"bytes"
-	"io/ioutil"
 	"fmt"
+	"golang.org/x/net/html"
+	"io/ioutil"
 	"net/http"
 	"net/url"
-	"golang.org/x/net/html"
+	"os"
 )
 
 func writeFileIfOrigHost(b []byte, rawurl string, origHosts map[string]bool) error {
@@ -23,7 +23,7 @@ func writeFileIfOrigHost(b []byte, rawurl string, origHosts map[string]bool) err
 		return fmt.Errorf("os.MkdirAll(%s) error %v", path, err)
 	}
 
-	if err := ioutil.WriteFile(path + "/index.html", b, 0755); err != nil {
+	if err := ioutil.WriteFile(path+"/index.html", b, 0755); err != nil {
 		return fmt.Errorf("ioutil.WriteFile error %v", err)
 	}
 	return nil

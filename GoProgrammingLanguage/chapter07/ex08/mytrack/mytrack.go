@@ -19,8 +19,8 @@ type Track struct {
 }
 
 type TracksToBeSorted struct {
-	Tracks []*Track
-	PrimaryKey string
+	Tracks      []*Track
+	PrimaryKey  string
 	SecondlyKey string
 }
 

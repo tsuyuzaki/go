@@ -9,11 +9,11 @@
 package main
 
 import (
+	"./mytrack"
 	"fmt"
 	"os"
-	"text/tabwriter"
 	"sort"
-	"./mytrack"
+	"text/tabwriter"
 )
 
 var tracks = []*mytrack.Track{

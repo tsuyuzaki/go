@@ -5,13 +5,13 @@
 package main
 
 import (
-	"os"
 	"fmt"
+	"os"
 )
 
 var prereqs = map[string]map[string]bool{
-	"algorithms":       {"data structures": true},
-	"calculus":         {"linear algebra":  true},
+	"algorithms": {"data structures": true},
+	"calculus":   {"linear algebra": true},
 
 	"compilers": {
 		"data structures":       true,
@@ -19,15 +19,15 @@ var prereqs = map[string]map[string]bool{
 		"computer organization": true,
 	},
 
-	"data structures":       {"discrete math":        true},
-	"databases":             {"data structures":      true},
+	"data structures":       {"discrete math": true},
+	"databases":             {"data structures": true},
 	"discrete math":         {"intro to programming": true},
-	"formal languages":      {"discrete math":        true},
-	"networks":              {"operating systems":    true},
+	"formal languages":      {"discrete math": true},
+	"networks":              {"operating systems": true},
 	"operating systems":     {"data structures": true, "computer organization": true},
 	"programming languages": {"data structures": true, "computer organization": true},
 
-	"linear algebra":        {"calculus":  true},
+	"linear algebra": {"calculus": true},
 }
 
 func main() {

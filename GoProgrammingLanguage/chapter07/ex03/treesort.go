@@ -11,7 +11,7 @@ type tree struct {
 }
 
 func main() {
-	values := []int{5,2,4,6,8,7,3,9,}
+	values := []int{5, 2, 4, 6, 8, 7, 3, 9}
 	var t *tree
 	for _, value := range values {
 		t = add(t, value)
@@ -23,7 +23,7 @@ func (t *tree) String() string {
 	return t.toStr(0)
 }
 
-func (t* tree) toStr(depth int) string {
+func (t *tree) toStr(depth int) string {
 	if t == nil {
 		return ""
 	}

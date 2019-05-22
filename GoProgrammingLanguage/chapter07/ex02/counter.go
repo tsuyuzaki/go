@@ -12,7 +12,7 @@ import (
 )
 
 type countingWriter struct {
-	w io.Writer
+	w   io.Writer
 	sum int64
 }
 

@@ -164,5 +164,49 @@
       ...
 
 ■7.11 型アサーションによるエラーの区別
+- os.IsNotExist(error) などはエラーに対して型アサーションを利用し、エラーの具象型で判定する方法を用いている。
+- PathError が返されて fmt.Errorf によりエラーメッセージを詳細化した場合、PathError 構造体ではなくなるため os.IsNotExist(error) が機能しなくなる。操作失敗直後にエラーの区別する必要があるので注意。
 
+■7.12 インタフェース型アサーションによる振る舞いの問い合わせ
+- 特定のメソッドを持っているか検証するために型アサーションを利用することができる。
+  type stringWriter interface {
+      WriteString(string) (n int, err error)
+  }
+  if sw, err := w.(stringWriter); ok {
+      ... // w は WriteString(string) メソッドを持っている。
+- fmt.Printf内では、単一オペランドを文字列へ変換するために型アサーションを利用している。
+  func formatOneValue(x interface{}) string {
+      if err, ok := x.(error); ok {
+          return err.Error()
+      }
+      if str, ok := x.(Stringer); ok {
+          return str.String()
+      }
+      ...
 
+■7.13 型 switch
+- 型アサーションは、どのようなメソッドを持つか判別するためと、値がどのような型であるかを判別するために利用される。
+- interface{} はさまざまな具象型を値として保持でき、インタフェース値の型を動的に識別し、型ごとに処理を切り替えるために型アサーションは利用できる。
+- 型アサーションによる型の識別は switch を利用して以下のように表現できる。
+  switch x.(type) {
+  case nil:
+  case int, uint:
+  case bool:
+  case string:
+  default:
+  }
+- case は上から順に比較されるため、x が複数インタフェースを持つ場合、case の順番が重要になるので注意。(fallthrough は許されていない。)
+- 以下の形式でswitch を記述すると、case 内では x は case の型として扱われる。ただし、複数の型の case では 元の型のままなので注意。★
+  func sqlQuote(x interface{}) {
+      switch x := x.(type) {
+      case int, uint: // 複数の型の case なので、この case 内では x は interface{} のまま。
+      case string:    // 単一の型の case なので、この case 内では x は string として扱える。
+
+■7.14 例：トークンに基づく XML デコード
+- encoding/xml パッケージは、トークンに基づくAPIを提供している。トークンを型アサーションで判別することでそれぞれのトークンの種類に応じた処理を記述できる。
+
+■7.15 ちょっとした助言
+- 不必要な抽象化でインタフェースを増やしてはいけない。実行時コストがかかる。
+- インタフェースは統一的に扱わなければならない二つ以上の具象型が存在する場合にだけ必要。★
+- 具象型が一つの場合でも、依存関係の問題で同一パッケージに具象型を定義できない場合はインタフェースを定義してもOK。★
+- Goのインタフェースは複数の具象型が満足するためのもののため、インタフェース内のメソッドは単純で数が少ない定義であるべき。Goのインタフェース設計では "必要なものだけを求める" ということが重要★

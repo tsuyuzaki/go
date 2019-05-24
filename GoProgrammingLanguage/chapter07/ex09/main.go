@@ -23,7 +23,7 @@ func getSortKeys(r *http.Request) []string {
 	if key == "" {
 		return []string{} // For default order
 	}
-    keys := []string{key}
+	keys := []string{key}
 	cookie, err := r.Cookie(sortKeyName)
 	if err == nil && cookie.Value != "" {
 		keys = append(keys, cookie.Value)

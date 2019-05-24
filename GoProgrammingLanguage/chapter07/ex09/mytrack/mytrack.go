@@ -40,66 +40,37 @@ func (ts *TracksToBeSorted) Len() int {
 
 func (ts *TracksToBeSorted) Less(i, j int) bool {
 	for _, key := range ts.sortKeys {
-		result := ts.compare(i, j, key)
-		if result != 0 {
-			return (result < 0)
+		if ts.less(i, j, key) {
+			return true
 		}
+		if !ts.less(j, i, key) { // equals
+			continue
+		}
+		return false
 	}
-	return (i < j)
+	return i < j
 }
 
 func (ts *TracksToBeSorted) Swap(i, j int) {
 	ts.Tracks[i], ts.Tracks[j] = ts.Tracks[j], ts.Tracks[i]
 }
 
-func (ts *TracksToBeSorted) compare(i, j int, key string) int {
-	lhs := ts.Tracks[i]
-	rhs := ts.Tracks[j]
+func (ts *TracksToBeSorted) less(i, j int, key string) bool {
+	lhs, rhs := ts.Tracks[i], ts.Tracks[j]
 
 	if key == "Title" {
-		if lhs.Title == rhs.Title {
-			return 0
-		} else if lhs.Title > rhs.Title {
-			return 1
-		} else {
-			return -1
-		}
+		return lhs.Title < rhs.Title
 	} else if key == "Artist" {
-		if lhs.Artist == rhs.Artist {
-			return 0
-		} else if lhs.Artist > rhs.Artist {
-			return 1
-		} else {
-			return -1
-		}
+		return lhs.Artist < rhs.Artist
 	} else if key == "Album" {
-		if lhs.Album == rhs.Album {
-			return 0
-		} else if lhs.Album > rhs.Album {
-			return 1
-		} else {
-			return -1
-		}
+		return lhs.Album < rhs.Album
 	} else if key == "Year" {
-		if lhs.Year == rhs.Year {
-			return 0
-		} else if lhs.Year > rhs.Year {
-			return 1
-		} else {
-			return -1
-		}
+		return lhs.Year < rhs.Year
 	} else if key == "Length" {
-		if lhs.Length == rhs.Length {
-			return 0
-		} else if lhs.Length > rhs.Length {
-			return 1
-		} else {
-			return -1
-		}
-	} else {
-		fmt.Fprintf(os.Stderr, "Invalid key [%s].\n", key)
-		return (i - j)
+		return lhs.Length < rhs.Length
 	}
+	fmt.Fprintf(os.Stderr, "Invalid key [%s].\n", key)
+	return i < j
 }
 
 func Length(s string) time.Duration {

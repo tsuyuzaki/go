@@ -66,9 +66,9 @@ func (ts TracksToBeSorted) less(i, j int, key string) bool {
 	} else if key == "Album" {
 		return lhs.Album < rhs.Album
 	} else if key == "Year" {
-		return lhs.Year > rhs.Year
+		return lhs.Year < rhs.Year
 	} else if key == "Length" {
-		return lhs.Length > rhs.Length
+		return lhs.Length < rhs.Length
 	}
 	fmt.Fprintf(os.Stderr, "Invalid key [%s].\n", key)
 	return i < j

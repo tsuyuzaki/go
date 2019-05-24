@@ -43,20 +43,20 @@ type Element struct {
 func (e *Element) toStr(gen int) string {
 	s := fmt.Sprintf("%*s<%s", gen*2, "", e.Type.Local)
 	for _, attr := range e.Attr {
-		s += ` ` + attr.Name.Local + `="` + attr.Value + `"`
+		s += " " + attr.Name.Local + "=\"" + attr.Value + "\""
 	}
-	s += ">\n"
+	s += ">"
 	
 	for _, child := range e.Children {
 		switch child := child.(type) {
 		case CharData:
-			s += fmt.Sprintf("%*s<%s/>\n", 1+gen*2, "", string(child))
+			s += string(child)
 		case *Element:
-			s += child.toStr(gen+1)
+			s += "\n" + child.toStr(gen+1) + fmt.Sprintf("%*s", gen*2, "")
 		}
 	}
 
-	s += fmt.Sprintf("%*s</%s>\n", gen*2, "", e.Type.Local)
+	s += fmt.Sprintf("</%s>\n", e.Type.Local)
 	return s
 }
 

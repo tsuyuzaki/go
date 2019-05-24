@@ -1,6 +1,8 @@
 /**
  * CSS のように、名前だけではなくその属性でも要素が選択されるように xmlselect を拡張しなさい。
  * たとえば、<div id="page" class="wide"> などの要素は、その名前だけではなく一致する id や class によって選択できるようにします。
+ * 
+ * $ cat in.xml | go run main.go div class div
  */
 package main
 
@@ -30,7 +32,6 @@ func main() {
 			elems = elems[:len(elems)-1]
 		case xml.CharData:
 			names := toNames(elems)
-			//fmt.Println(names)
 			if containsAll(names, os.Args[1:]) {
 				fmt.Printf("%s: %s\n", strings.Join(names, " "), tok)
 			}

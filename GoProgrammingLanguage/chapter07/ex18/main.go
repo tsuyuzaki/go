@@ -33,7 +33,6 @@ type Node interface{} // CharData あるいは *Element
 
 type CharData string
 
-
 type Element struct {
     Type     xml.Name
     Attr     []xml.Attr
@@ -43,7 +42,7 @@ type Element struct {
 func (e *Element) toStr(gen int) string {
 	s := fmt.Sprintf("%*s<%s", gen*2, "", e.Type.Local)
 	for _, attr := range e.Attr {
-		s += " " + attr.Name.Local + "=\"" + attr.Value + "\""
+		s += fmt.Sprintf(` %s="%s"`, attr.Name.Local, attr.Value)
 	}
 	s += ">"
 	
@@ -52,7 +51,8 @@ func (e *Element) toStr(gen int) string {
 		case CharData:
 			s += string(child)
 		case *Element:
-			s += "\n" + child.toStr(gen+1) + fmt.Sprintf("\n%*s", gen*2, "")
+			s += "\n" + child.toStr(gen+1) + "\n"
+			s += fmt.Sprintf("%*s", gen*2, "")
 		}
 	}
 

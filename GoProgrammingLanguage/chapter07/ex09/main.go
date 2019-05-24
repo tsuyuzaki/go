@@ -16,7 +16,7 @@ import (
 )
 
 const sortKeyName = "sortKey"
-var table = template.Must(template.ParseFiles("./html/index.html"))
+var table = template.Must(template.ParseFiles("./template/table.html.tpl"))
 
 func getSortKeys(r *http.Request) []string {
 	key := r.URL.Query().Get(sortKeyName)

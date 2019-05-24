@@ -52,18 +52,18 @@ func (e *Element) toStr(gen int) string {
 		case CharData:
 			s += string(child)
 		case *Element:
-			s += "\n" + child.toStr(gen+1) + fmt.Sprintf("%*s", gen*2, "")
+			s += "\n" + child.toStr(gen+1) + fmt.Sprintf("\n%*s", gen*2, "")
 		}
 	}
 
-	s += fmt.Sprintf("</%s>\n", e.Type.Local)
+	s += fmt.Sprintf("</%s>", e.Type.Local)
 	return s
 }
 
 func main() {
 	dec := xml.NewDecoder(os.Stdin)
 	root := &Element{Type: xml.Name{Local:"root"}}
-	elems := []*Element{root}
+	stack := []*Element{root}
 	for {
 		tok, err := dec.Token()
 		if err == io.EOF {
@@ -75,14 +75,14 @@ func main() {
 		switch tok := tok.(type) {
 		case xml.StartElement:
 			elem := &Element{Type: tok.Name, Attr: tok.Attr}
-			parent := elems[len(elems) - 1]
+			parent := stack[len(stack) - 1]
 			parent.Children = append(parent.Children, Node(elem))
-			elems = append(elems, elem)
+			stack = append(stack, elem)
 		case xml.EndElement:
-			elems = elems[:len(elems)-1]
+			stack = stack[:len(stack)-1]
 		case xml.CharData:
 			data := CharData(string(tok))
-			parent := elems[len(elems) - 1]
+			parent := stack[len(stack) - 1]
 			parent.Children = append(parent.Children, Node(data))
 		}
 	}
